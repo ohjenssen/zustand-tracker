@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import { useSearchParams } from 'next/navigation'; // <-- Henter verktøy for å lese URL
 import { Search, Sparkles, ScanBarcode, HelpCircle } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import ActionButton from '../components/ActionButton';
@@ -8,6 +9,10 @@ import foodData from '../data/foodData.json';
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
+  const searchParams = useSearchParams();
+
+  // Henter ut f.eks. "1" hvis URL er /search?mealId=1
+  const mealId = searchParams.get('mealId'); 
   
   const filteredFood = query 
     ? foodData.filter(f => f.name.toLowerCase().includes(query.toLowerCase()))
@@ -42,6 +47,7 @@ export default function SearchPage() {
               id={food.id} 
               name={food.name} 
               brand={food.brand} 
+              mealId={mealId} // <-- Sender med mealId til hvert søke-element!
             />
           ))}
           {query && filteredFood.length === 0 && (
@@ -51,11 +57,11 @@ export default function SearchPage() {
       </section>
 
       {/* Action Buttons Row */}
-      <div className="fixed bottom-24 left-0 right-0 flex justify-center gap-6 px-6">
+      {/* <div className="fixed bottom-24 left-0 right-0 flex justify-center gap-6 px-6">
         <ActionButton icon={Sparkles} />
         <ActionButton icon={ScanBarcode} />
         <ActionButton icon={HelpCircle} />
-      </div>
+      </div> */}
 
       <Navbar />
     </main>
