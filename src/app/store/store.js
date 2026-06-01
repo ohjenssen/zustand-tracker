@@ -43,7 +43,7 @@ export const useMealsStore = create((set, get) => ({
     const calculatedComponent = {
       ...foodComponent,
       kcal: Math.round(foodComponent.kcal * factor),
-      protein: Math.round((foodComponent.protein * factor) * 10) / 10,
+      protein: Math.round((foodComponent.protein * factor) * 10) / 10, // 12.3
       fat: Math.round((foodComponent.fat * factor) * 10) / 10,
       carbs: Math.round((foodComponent.carbs * factor) * 10) / 10,
     };
@@ -63,9 +63,9 @@ export const useMealsStore = create((set, get) => ({
 }));
 
 export const useUser = create((set) => ({
-  name: 'Connor Kenway',
+  name: 'Zustand Application',
   setName: (newValue) => set({name: newValue}),
-  email: 'connor.kenway@gmail.com',
+  email: 'oskar.jenssen@gmail.com',
   setEmail: (newValue) => set({email: newValue}),
   age: 34,
   setAge: (newValue) => set({age: newValue}),

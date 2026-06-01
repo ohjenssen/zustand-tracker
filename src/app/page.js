@@ -10,12 +10,6 @@ import { useMealsStore } from './store/store';
 
 export default function CalorieTrackerHome() {
 
-  // Foreløpig hardkodet, men snart hentet fra Context!
-  const dummyMeals = [
-    { id: 1, name: "Meal 1", kcal: 511, protein: 46, fat: 7.2, carbs: 60.6 },
-    { id: 2, name: "Meal 2", kcal: 180, protein: 33, fat: 0.6, carbs: 10.6 }
-  ];
-
   const meals = useMealsStore((state) => state.meals);
 
   return (
