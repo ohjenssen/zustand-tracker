@@ -1,13 +1,12 @@
 "use client";
-import React, { useState } from 'react';
-import { useSearchParams } from 'next/navigation'; // <-- Henter verktøy for å lese URL
-import { Search, Sparkles, ScanBarcode, HelpCircle } from 'lucide-react';
+import React, { useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Search } from 'lucide-react';
 import Navbar from '../components/Navbar';
-import ActionButton from '../components/ActionButton';
 import SearchItem from '../components/SearchItem';
 import foodData from '../data/foodData.json';
 
-export default function SearchPage() {
+function SearchContent() {
   const [query, setQuery] = useState("");
   const searchParams = useSearchParams();
 
@@ -21,8 +20,7 @@ export default function SearchPage() {
   const displayList = query ? filteredFood : foodData;
 
   return (
-    <main className="min-h-screen bg-[#003d2b] p-6 pb-40">
-      
+    <>
       {/* Search Input Box */}
       <div className="relative mb-8 mt-4">
         <Search className="absolute left-4 top-3.5 text-gray-400" size={20} />
@@ -47,7 +45,7 @@ export default function SearchPage() {
               id={food.id} 
               name={food.name} 
               brand={food.brand} 
-              mealId={mealId} // <-- Sender med mealId til hvert søke-element!
+              mealId={mealId} 
             />
           ))}
           {query && filteredFood.length === 0 && (
@@ -55,14 +53,16 @@ export default function SearchPage() {
           )}
         </div>
       </section>
+    </>
+  );
+}
 
-      {/* Action Buttons Row */}
-      {/* <div className="fixed bottom-24 left-0 right-0 flex justify-center gap-6 px-6">
-        <ActionButton icon={Sparkles} />
-        <ActionButton icon={ScanBarcode} />
-        <ActionButton icon={HelpCircle} />
-      </div> */}
-
+export default function SearchPage() {
+  return (
+    <main className="min-h-screen bg-[#003d2b] p-6 pb-40">
+      <Suspense fallback={<div className="text-white">Loading search...</div>}>
+        <SearchContent />
+      </Suspense>
       <Navbar />
     </main>
   );
