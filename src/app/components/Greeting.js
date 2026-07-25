@@ -1,11 +1,23 @@
 'use client'
-import { useUser } from "../store/store"
+import { useEffect } from "react";
+import { useUserStore } from "../store/store"
+import Spinner from "./Spinner";
 
 export default function Greeting(){
-  const userName = useUser((state) => state.name)
+  const fetchUser = useUserStore((state) => state.fetchUser);
+  const loading = useUserStore((state) => state.loading);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser])
+
+  const name = useUserStore((state) => state.name);
+
   return (
     <div>
-      <h2>Hello {userName}!</h2>
+      { loading ? <Spinner size='sm'/> :
+        <h2>Hello {name}!</h2>
+      }
     </div>
   )
 }

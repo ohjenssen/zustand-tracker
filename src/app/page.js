@@ -17,7 +17,7 @@ export default function CalorieTrackerHome() {
 
       <Greeting />
       
-      <CalorieStats eaten={691} goal={2000} />
+      <CalorieStats eaten={691} />
 
 
       <section className="space-y-4">

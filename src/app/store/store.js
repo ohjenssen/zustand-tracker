@@ -1,4 +1,7 @@
 import { create } from 'zustand'
+import { getUser } from '@/app/utils/getUser';
+import { convertServerPatchToFullTree } from 'next/dist/client/components/segment-cache/navigation';
+
 
 export const useMealsStore = create((set, get) => ({
   // Her har jeg lagd en starttilstand for måltider, 
@@ -62,13 +65,59 @@ export const useMealsStore = create((set, get) => ({
   }
 }));
 
-export const useUser = create((set) => ({
-  name: 'Zustand Application',
-  setName: (newValue) => set({name: newValue}),
-  email: 'oskar.jenssen@gmail.com',
-  setEmail: (newValue) => set({email: newValue}),
-  age: 34,
-  setAge: (newValue) => set({age: newValue}),
-  dailyCalories: 2200,
-  setCalories: (newValue) => set({dailyCalories: newValue}),
-}))
+export const useUserStore = create((set, get) => ({
+  name: '',
+  email: '',
+  age: 0,
+  dailyCalories: 0,
+  loading: false,
+
+  fetchUser: async () => {
+    // Hvis vi allerede har hentet dataen, ikke hent den på nytt (Caching) 
+    // Sørger for at andre komponenter ikke kjører fetch på nytt
+    if (get().name) return; 
+    set({ loading: true });
+    console.log('fetch har kjørt!')
+    try {
+      const res = await fetch("http://localhost:3000/api/user");
+      const data = await res.json();
+      
+      set({
+        name: data.user,
+        email: data.email,
+        age: data.age,
+        dailyCalories: data.dailyCalories,
+        loading: false,
+      });
+    } catch (err) {
+      set({ loading: false });
+      console.error("Feil ved henting av bruker:", err);
+    }
+  },
+
+  updateUserInDB: async (updatedFields) => {
+  
+  const currentFields = get();
+  set(updatedFields);
+
+  try {
+    const res = await fetch("http://localhost:3000/api/user", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user: updatedFields.name || currentFields.name,
+        email: updatedFields.email || currentFields.email,
+        age: updatedFields.age || currentFields.age,
+        dailyCalories: updatedFields.dailyCalories || currentFields.dailyCalories,
+      }),
+    });
+
+    if (!res.ok) throw new Error("error");
+    
+    console.log("Vellykket synkronisering!");
+  } catch (err) {
+    console.error("Error", err);
+  }
+}
+}));
+

@@ -1,17 +1,13 @@
-import { useUser } from '../store/store';
+import { useUserStore } from '../store/store';
+import Spinner from './Spinner';
 
 export default function UserSettings({ onClose }) {
-  const userName = useUser((state) => state.name)
-  const setName = useUser((state) => state.setName)
-  
-  const email = useUser((state) => state.email)
-  const setEmail = useUser((state) => state.setEmail)
-  
-  const age = useUser((state) => state.age)
-  const setAge = useUser((state) => state.setAge)
-  
-  const dailyCalories = useUser((state) => state.dailyCalories)
-  const setCalories = useUser((state) => state.setCalories)
+  const name = useUserStore((state) => state.name);
+  const email = useUserStore((state) => state.email);
+  const age = useUserStore((state) => state.age);
+  const dailyCalories = useUserStore((state) => state.dailyCalories);
+  const loading = useUserStore((state) => state.loading);
+  const updateUserInDB = useUserStore((state) => state.updateUserInDB)
 
   // handleSave tar imot eventet fra form-submission
   const handleSave = (e) => {
@@ -21,11 +17,8 @@ export default function UserSettings({ onClose }) {
     const formData = new FormData(form);
     const formJson = Object.fromEntries(formData.entries()); 
     console.log(formJson);
-    
-    // Vi bruker funksjonene fra Zustand til å sette nye verdier 
-    setName(formJson.name)
-    setEmail(formJson.email)
-    setAge(formJson.age)
+    updateUserInDB(formJson);
+
     onClose();
   };
 
@@ -33,32 +26,36 @@ export default function UserSettings({ onClose }) {
   const labelClass = "text-xs font-bold text-[#003d2b] mt-6 block";
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-6" onClick={onClose}>
-      
-      <form 
-        onSubmit={handleSave} 
-        className="bg-[#00ffb3] rounded-3xl w-full max-w-sm p-8 shadow-2xl relative" 
-        onClick={(e) => e.stopPropagation()}
-      >
+    <>
+      { loading ? <Spinner size='lg'/> : 
+      <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-6" onClick={onClose}>
         
-        <h2 className="text-xl font-bold text-[#003d2b] mb-2 hidden">Edit Profile</h2>
+        <form 
+          onSubmit={handleSave} 
+          className="bg-[#00ffb3] rounded-3xl w-full max-w-sm p-8 shadow-2xl relative" 
+          onClick={(e) => e.stopPropagation()}
+        >
+          
+          <h2 className="text-xl font-bold text-[#003d2b] mb-2 hidden">Edit Profile</h2>
 
-        <div>
-          <label className={labelClass}>Name</label>
-          <input type="text" name="name" defaultValue={userName} className={inputClass} />
+          <div>
+            <label className={labelClass}>Name</label>
+            <input type="text" name="name" defaultValue={name} className={inputClass} />
 
-          <label className={labelClass}>Email</label>
-          <input type="email" name="email" defaultValue={email} className={inputClass} />
+            <label className={labelClass}>Email</label>
+            <input type="email" name="email" defaultValue={email} className={inputClass} />
 
-          <label className={labelClass}>Age</label>
-          <input type="number" name="age" defaultValue={age} className={inputClass} />
+            <label className={labelClass}>Age</label>
+            <input type="number" name="age" defaultValue={age} className={inputClass} />
 
-          <label className={labelClass}>Daily calories</label>
-          <input type="number" name="dailyCalories" value={dailyCalories} onChange={(e) => setCalories(e.target.value)} className={inputClass} />
-        </div>
+            <label className={labelClass}>Daily calories</label>
+            <input type="number" name="dailyCalories" defaultValue={dailyCalories} className={inputClass} />
+          </div>
 
-        <button type="submit" className="mt-8 w-full bg-[#003d2b] text-[#00ffb3] py-3 rounded-xl font-bold">Save Changes</button>
-      </form>
-    </div>
+          <button type="submit" className="mt-8 w-full bg-[#003d2b] text-[#00ffb3] py-3 rounded-xl font-bold">Save Changes</button>
+        </form>
+      </div>
+      }
+    </>
   );
 }

@@ -1,13 +1,17 @@
 import { UserCircle, Edit2 } from 'lucide-react';
-import { useUser } from '../store/store';
+import { useUserStore } from '../store/store';
+import Spinner from './Spinner';
 
-export default function UserProfile({ onEdit }) {
-  const userName = useUser((state) => state.name)
-  const email = useUser((state) => state.email)
-  const age = useUser((state) => state.age)
-  const dailyCalories = useUser((state) => state.dailyCalories)
+export default function UserProfile({ onEdit = false }) {
+  const name = useUserStore((state) => state.name);
+  const email = useUserStore((state) => state.email);
+  const age = useUserStore((state) => state.age);
+  const dailyCalories = useUserStore((state) => state.dailyCalories);
+  const loading = useUserStore((state) => state.loading);
 
   return (
+    <>
+    { loading ? <Spinner /> : 
     <div className="flex flex-col items-center pt-12 p-6">
       {/* Edit Icon top right */}
       <button 
@@ -21,7 +25,7 @@ export default function UserProfile({ onEdit }) {
       <div className="flex items-center gap-6 self-start mb-20 mt-10">
         <UserCircle size={100} strokeWidth={1} className="text-white" />
         <div className="flex flex-col">
-          <h1 className="text-2xl font-bold text-[#00ffb3]">{userName}</h1>
+          <h1 className="text-2xl font-bold text-[#00ffb3]">{name}</h1>
           <p className="text-sm text-[#00ffb3] opacity-80">{email}</p>
           <p className="text-sm text-[#00ffb3] opacity-80 mt-2">{age} years old</p>
         </div>
@@ -33,5 +37,7 @@ export default function UserProfile({ onEdit }) {
         <p className="text-6xl font-bold text-[#00ffb3]">{dailyCalories}</p>
       </div>
     </div>
+    }
+    </>
   );
 }
