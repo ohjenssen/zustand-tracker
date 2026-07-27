@@ -2,10 +2,10 @@
 import React from 'react';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
-import Navbar from './components/Navbar';
-import CalorieStats from './components/CalorieStats';
-import MealCard from './components/MealCard';
-import Greeting from './components/Greeting';
+import Navbar from '../components/Navbar';
+import CalorieStats from '../components/CalorieStats';
+import MealCard from '../components/MealCard';
+import Greeting from '../components/Greeting';
 import { useMealsStore } from '../store/store';
 
 export default function CalorieTrackerHome() {
