@@ -17,8 +17,15 @@ export default function LoginPage() {
         setError(null);
 
         try {
+            // 1. Hent CSRF-beskyttelse fra Laravel først
+            await fetch('https://foodtracker-api.oskarjenssen.com/sanctum/csrf-cookie', {
+                method: 'GET',
+                credentials: 'include', // Kjempeviktig!
+            });
+
             const response = await fetch('https://foodtracker-api.oskarjenssen.com/api/login', {
                 method: "POST",
+                credentials: 'include',
                 headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
