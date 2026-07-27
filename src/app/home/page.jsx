@@ -6,7 +6,7 @@ import Navbar from './components/Navbar';
 import CalorieStats from './components/CalorieStats';
 import MealCard from './components/MealCard';
 import Greeting from './components/Greeting';
-import { useMealsStore } from './store/store';
+import { useMealsStore } from '../store/store';
 
 export default function CalorieTrackerHome() {
 
