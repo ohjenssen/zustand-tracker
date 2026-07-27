@@ -12,42 +12,42 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    async function login(){
+    async function login() {
         setLoading(true);
         setError(null);
 
         try {
-            // 1. Hent CSRF-beskyttelse fra Laravel først
-            await fetch('https://foodtracker-api.oskarjenssen.com/sanctum/csrf-cookie', {
-                method: 'GET',
-                credentials: 'include', // Kjempeviktig!
-            });
-
+            // Vi gjør kun ET direkte POST-kall til /api/login
             const response = await fetch('https://foodtracker-api.oskarjenssen.com/api/login', {
                 method: "POST",
-                credentials: 'include',
                 headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
                 },
                 body: JSON.stringify({
                     email: email,
                     password: password,
                 })
-            })
+            });
 
             const json = await response.json();
 
-            if (!response.ok){
-                throw new Error(json.message || 'Could not log in.')
+            if (!response.ok) {
+                throw new Error(json.message || 'Feil ved innlogging.');
             }
 
-            console.log(response);
-            console.log(json);
+            // 🚀 Lagre tokenet i localStorage!
+            if (json.access_token) {
+                localStorage.setItem('token', json.access_token);
+                console.log('Innlogging vellykket! Token lagret:', json.access_token);
+                
+                // Send brukeren til dashboard/hovedsiden
+                router.push('/'); 
+            }
 
-        } catch(error){
+        } catch(error) {
             console.error('Login error', error);
-
+            setError(error.message);
         } finally {
             setLoading(false);
         }
