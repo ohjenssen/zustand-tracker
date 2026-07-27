@@ -1,0 +1,95 @@
+.container {
+  min-height: 100vh;
+  background-color: #003d2b; /* Mørkegrønn bakgrunn */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.card {
+  width: 100%;
+  max-width: 380px;
+  background-color: #00e699; /* Den knallgrønne/minta bakgrunnen på kortet */
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: #00e699; /* Mintgrønn farge på teksten og pilen utenfor kortet */
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 0.75rem;
+  align-self: flex-start;
+  transition: opacity 0.2s ease;
+}
+
+.backButton:active {
+  opacity: 0.7;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.label {
+  color: #003d2b; /* Mørkegrønn farge på etikettene */
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #003d2b; /* Den mørke linjen under feltet */
+  padding: 0.4rem 0;
+  color: #003d2b;
+  font-size: 1rem;
+  font-weight: 700;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: rgba(0, 61, 43, 0.5);
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.9rem;
+  margin-top: 1rem;
+  background-color: #ffd600; /* Knallgul knapp */
+  color: #003d2b; /* Mørkegrønn, fet tekst */
+  font-size: 1.3rem;
+  font-weight: 800;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.2s ease;
+}
+
+.submitButton:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}

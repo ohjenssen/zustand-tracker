@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 import { getUser } from '@/app/utils/getUser';
-import { convertServerPatchToFullTree } from 'next/dist/client/components/segment-cache/navigation';
 
 
 export const useMealsStore = create((set, get) => ({
