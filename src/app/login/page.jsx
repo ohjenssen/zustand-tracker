@@ -4,20 +4,23 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import styles from './login.module.css';
+import { useAuthStore } from '../store/store';
 
 export default function LoginPage() {
     const router = useRouter();
     const [email, setEmail] = useState('oskar_jenssen@hotmail.com');
-    const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [password, setPassword] = useState('b#2TTyhf6t');
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-    async function login() {
+    const setUser = useAuthStore((state) => state.setUser);
+    const setAuth = useAuthStore((state) => state.setAuth);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         setLoading(true);
-        setError(null);
 
         try {
-            // Vi gjør kun ET direkte POST-kall til /api/login
             const response = await fetch('https://foodtracker-api.oskarjenssen.com/api/login', {
                 method: "POST",
                 headers: {
@@ -33,41 +36,31 @@ export default function LoginPage() {
             const json = await response.json();
 
             if (!response.ok) {
-                throw new Error(json.message || 'Feil ved innlogging.');
+                throw new Error(json.message || 'Feil ved innlogging');
             }
 
-            // 🚀 Lagre tokenet i localStorage!
             if (json.access_token) {
-                localStorage.setItem('token', json.access_token);
-                console.log('Innlogging vellykket! Token lagret:', json.access_token);
-                
-                // Send brukeren til dashboard/hovedsiden
-                router.push('/'); 
-            }
+                setUser(json.user);
+                setAuth(json.auth);
 
-        } catch(error) {
-            console.error('Login error', error);
-            setError(error.message);
+                localStorage.setItem('token', json.access_token);
+                return router.replace('/home'); 
+            }
+        } catch (error) {
+            setError(error);
+            console.error('Login error:', error);
+            throw error; 
         } finally {
             setLoading(false);
         }
-    }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Logging in with:', { email, password });
-        login();
     };
 
     return (
         <main className={styles.container}>
             <div style={{ width: '100%', maxWidth: '380px' }}>
 
-                <button 
-                    type="button" 
-                    onClick={() => router.back()} 
-                    className={styles.backButton}
-                >
+                <button type="button" onClick={() => router.back()} className={styles.backButton} >
                     <ArrowLeft size={24} />
                     <span>Back</span>
                 </button>
@@ -91,9 +84,7 @@ export default function LoginPage() {
                         </div>
 
                         <div className={styles.inputGroup}>
-                            <label htmlFor="password" className={styles.label}>
-                                Password
-                            </label>
+                            <label htmlFor="password" className={styles.label}>Password</label>
                             <input
                                 id="password"
                                 type="password"
@@ -104,11 +95,7 @@ export default function LoginPage() {
                             />
                         </div>
 
-                        <button 
-                            type="submit" 
-                            className={styles.submitButton}
-                            disabled={loading}
-                            >
+                        <button type="submit" className={styles.submitButton} disabled={loading}>
                             {loading ? 'Logging in...' : 'Log in'}
                         </button>
 

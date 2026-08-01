@@ -1,23 +1,12 @@
-'use client'
-import { useEffect } from "react";
-import { useUserStore } from "../store/store"
 import Spinner from "./Spinner";
+import { useAuthStore } from "../store/store";
 
 export default function Greeting(){
-  const fetchUser = useUserStore((state) => state.fetchUser);
-  const loading = useUserStore((state) => state.loading);
-
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser])
-
-  const name = useUserStore((state) => state.name);
-
+  const user = useAuthStore((state) => state.user);
+  console.log(user);
   return (
     <div>
-      { loading ? <Spinner size='sm'/> :
-        <h2>Hello {name}!</h2>
-      }
+        <h2>Hello {user.name}!</h2>
     </div>
   )
 }

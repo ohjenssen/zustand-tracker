@@ -1,6 +1,4 @@
 import { create } from 'zustand'
-import { getUser } from '@/app/utils/getUser';
-
 
 export const useMealsStore = create((set, get) => ({
   // Her har jeg lagd en starttilstand for måltider, 
@@ -72,11 +70,9 @@ export const useUserStore = create((set, get) => ({
   loading: false,
 
   fetchUser: async () => {
-    // Hvis vi allerede har hentet dataen, ikke hent den på nytt (Caching) 
-    // Sørger for at andre komponenter ikke kjører fetch på nytt
-    if (get().name) return; 
+    if (get().name) return; // Hvis vi allerede har dataen, ikke hent den på nytt
     set({ loading: true });
-    console.log('fetch har kjørt!')
+    // console.log('fetch har kjørt!')
     try {
       const res = await fetch("http://localhost:3000/api/user");
       const data = await res.json();
@@ -95,28 +91,98 @@ export const useUserStore = create((set, get) => ({
   },
 
   updateUserInDB: async (updatedFields) => {
-  
-  const currentFields = get();
-  set(updatedFields);
+    const currentFields = get();
+    set(updatedFields);
 
-  try {
-    const res = await fetch("http://localhost:3000/api/user", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user: updatedFields.name || currentFields.name,
-        email: updatedFields.email || currentFields.email,
-        age: updatedFields.age || currentFields.age,
-        dailyCalories: updatedFields.dailyCalories || currentFields.dailyCalories,
-      }),
-    });
+    try {
+        const res = await fetch("http://localhost:3000/api/user", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                user: updatedFields.name || currentFields.name,
+                email: updatedFields.email || currentFields.email,
+                age: updatedFields.age || currentFields.age,
+                dailyCalories: updatedFields.dailyCalories || currentFields.dailyCalories,
+            }),
+        });
 
-    if (!res.ok) throw new Error("error");
-    
-    console.log("Vellykket synkronisering!");
-  } catch (err) {
-    console.error("Error", err);
-  }
+        if (!res.ok) throw new Error("error");
+        console.log("Vellykket synkronisering!");
+    } catch (err) {
+        console.error("Error", err);
+    }
 }
 }));
 
+export const useAuthStore = create((set, get) => ({
+    user: null,
+    token: null,
+    isLoading: false,
+
+    setUser: (user) => set({ user}),
+    setAuth: (token) => set({ token}),
+
+    logout: async () => {
+        const token = get().token || localStorage.getItem('token');
+
+        if (token) {
+            try {
+                await fetch('https://foodtracker-api.oskarjenssen.com/api/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+            } catch (error) {
+                console.error('Feil ved utlogging på server:', error);
+            }
+        }
+
+        localStorage.removeItem('token');
+        set({ user: null, token: null });
+    },
+
+    setToken: (token) => {
+        if (token) {
+            localStorage.setItem('token', token);
+        } else {
+            localStorage.removeItem('token');
+        }
+        set({ token });
+    },
+
+    checkAuth: async () => {
+        set({ isLoading: true });
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            set({ user: null, token: null, isLoading: false });
+            return false;
+        }
+
+        try {
+            const res = await fetch('https://foodtracker-api.oskarjenssen.com/api/user', {
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (res.ok) {
+                const userData = await res.json();
+                set({ user: userData, token, isLoading: false });
+                return true;
+            } else {
+                localStorage.removeItem('token');
+                set({ user: null, token: null, isLoading: false });
+                return false;
+            }
+        } catch (error) {
+            console.error('Feil ved validering av token:', error);
+            set({ user: null, token: null, isLoading: false });
+            return false;
+        }
+    },
+}));
