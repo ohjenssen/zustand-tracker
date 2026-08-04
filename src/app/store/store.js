@@ -119,9 +119,6 @@ export const useAuthStore = create((set, get) => ({
     token: null,
     isLoading: false,
 
-    setUser: (user) => set({ user}),
-    setAuth: (token) => set({ token}),
-
     logout: async () => {
         const token = get().token || localStorage.getItem('token');
 
@@ -156,31 +153,39 @@ export const useAuthStore = create((set, get) => ({
     checkAuth: async () => {
         set({ isLoading: true });
         const token = localStorage.getItem('token');
-
-        if (!token) {
-            set({ user: null, token: null, isLoading: false });
-            return false;
+        const user = get().user;
+        
+        if(user && token){
+            return;
         }
 
-        try {
-            const res = await fetch('https://foodtracker-api.oskarjenssen.com/api/user', {
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+        if(!user && token){
+            try {
+                const res = await fetch('https://foodtracker-api.oskarjenssen.com/api/user', {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
 
-            if (res.ok) {
-                const userData = await res.json();
-                set({ user: userData, token, isLoading: false });
-                return true;
-            } else {
-                localStorage.removeItem('token');
+                if (res.ok) {
+                    const userData = await res.json();
+                    set({ user: userData, token, isLoading: false });
+                    return true;
+                } else {
+                    localStorage.removeItem('token');
+                    set({ user: null, token: null, isLoading: false });
+                    return false;
+                }
+            } catch (error) {
+                console.error('Feil ved validering av token:', error);
                 set({ user: null, token: null, isLoading: false });
                 return false;
             }
-        } catch (error) {
-            console.error('Feil ved validering av token:', error);
+        }
+
+        if (!token) {
+            console.log('here!')
             set({ user: null, token: null, isLoading: false });
             return false;
         }
