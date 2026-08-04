@@ -6,10 +6,36 @@ import Navbar from '../components/Navbar';
 import CalorieStats from '../components/CalorieStats';
 import MealCard from '../components/MealCard';
 import { useMealsStore, useAuthStore } from '../store/store';
+import { useEffect } from 'react';
 
 export default function CalorieTrackerHome() {
 
     const meals = useMealsStore((state) => state.meals);
+    const token = useAuthStore((state) => state.token);
+
+    useEffect(() => {
+        async function getMeals(){
+            try {
+                const response = await fetch('https://foodtracker-api.oskarjenssen.com/api/meals', {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+
+                const json = await response.json();
+
+                console.log('response: ', response);
+                console.log('json: ', json);
+            } catch(error) {
+                console.log('error: ', error)
+            }
+        }
+
+        getMeals();
+    }, [])
 
     return (
         <main className="min-h-screen bg-[#003d2b] text-[#22c55e] p-6 pb-32">
