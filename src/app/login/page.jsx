@@ -9,7 +9,7 @@ import { useAuthStore } from '../store/store';
 export default function LoginPage() {
     const router = useRouter();
     const [email, setEmail] = useState('oskar_jenssen@hotmail.com');
-    const [password, setPassword] = useState('b#2TTyhf6t');
+    const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
