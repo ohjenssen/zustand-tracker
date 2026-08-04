@@ -1,5 +1,5 @@
-import ProtectedRoute from "./components/ProtectedRoute";
 import "./globals.css";
+import AuthInitializer from "./components/AuthInitializer";
 
 export const metadata = {
   title: 'ScanMaster',
@@ -19,6 +19,7 @@ export const viewport= {
 export default async function RootLayout({ children }) {
     return (
         <html lang="en">
+        <AuthInitializer />
         <body className="min-h-full flex flex-col">
             {children}
             </body>
