@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import CalorieStats from '../components/CalorieStats';
 import MealCard from '../components/MealCard';
-import Greeting from '../components/Greeting';
 import { useMealsStore, useAuthStore } from '../store/store';
 
 export default function CalorieTrackerHome() {
@@ -14,8 +13,6 @@ export default function CalorieTrackerHome() {
 
     return (
         <main className="min-h-screen bg-[#003d2b] text-[#22c55e] p-6 pb-32">
-
-            <Greeting />
             
             <CalorieStats eaten={691} />
 
