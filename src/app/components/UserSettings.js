@@ -16,7 +16,6 @@ export default function UserSettings({ onClose }) {
     const form = e.currentTarget; 
     const formData = new FormData(form);
     const formJson = Object.fromEntries(formData.entries()); 
-    console.log(formJson);
     updateUserInDB(formJson);
 
     onClose();
