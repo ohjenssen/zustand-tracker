@@ -40,11 +40,11 @@ export default function LoginPage() {
             }
 
             if (json.access_token) {
-                setUser(json.user);
-                setAuth(json.auth);
+                    setUser(json.user);
+                    setAuth(json.access_token);
 
-                localStorage.setItem('token', json.access_token);
-                return router.replace('/home'); 
+                    localStorage.setItem('token', json.access_token);
+                    return router.replace('/home'); 
             }
         } catch (error) {
             setError(error);
