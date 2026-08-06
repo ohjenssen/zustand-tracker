@@ -13,9 +13,6 @@ export default function UserProfile({ onEdit = false }) {
     const dailyCalories = useUserStore((state) => state.dailyCalories);
     const logout = useAuthStore((state) => state.logout);
     const isLoading = useAuthStore((state) => state.isLoading);
-    // console.log(user);
-
-    // const user = useAuthStore((state) => state.user);
 
     function handleLogout(){
         logout()
