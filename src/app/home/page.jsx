@@ -4,9 +4,8 @@ import styles from './home.module.css';
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 import { useAuthStore } from '../store/store';
-import Navbar from '../components/Navbar';
 import CalorieStats from '../components/CalorieStats';
-import MealCard from '../components/MealCard';
+import Meals from '../components/Meals/Meals';
 
 export default function CalorieTrackerHome() {
     const token = useAuthStore((state) => state.token);
@@ -29,7 +28,7 @@ export default function CalorieTrackerHome() {
                 <main className={styles.main}>
                     <CalorieStats eaten={691} />
 
-                    <MealCard />
+                    <Meals />
 
                     <div className={styles.fabWrapper}>
                         <Link href="/search?mealId=new" className={styles.fabButton}>
