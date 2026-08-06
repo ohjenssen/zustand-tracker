@@ -72,7 +72,6 @@ export const useUserStore = create((set, get) => ({
   fetchUser: async () => {
     if (get().name) return; // Hvis vi allerede har dataen, ikke hent den på nytt
     set({ loading: true });
-    // console.log('fetch har kjørt!')
     try {
       const res = await fetch("http://localhost:3000/api/user");
       const data = await res.json();
@@ -107,7 +106,6 @@ export const useUserStore = create((set, get) => ({
         });
 
         if (!res.ok) throw new Error("error");
-        console.log("Vellykket synkronisering!");
     } catch (err) {
         console.error("Error", err);
     }
@@ -117,7 +115,11 @@ export const useUserStore = create((set, get) => ({
 export const useAuthStore = create((set, get) => ({
     user: null,
     token: null,
-    isLoading: false,
+    isLoading: true,
+    meals: null,
+
+    setUser: (user) => set({ user }),
+    setAuth: (token) => set({ token }),
 
     logout: async () => {
         const token = get().token || localStorage.getItem('token');
@@ -138,7 +140,7 @@ export const useAuthStore = create((set, get) => ({
         }
 
         localStorage.removeItem('token');
-        set({ user: null, token: null });
+        set({ user: null, token: null, meals: null, isLoading: false });
     },
 
     setToken: (token) => {
@@ -154,12 +156,13 @@ export const useAuthStore = create((set, get) => ({
         set({ isLoading: true });
         const token = localStorage.getItem('token');
         const user = get().user;
-        
-        if(user && token){
-            return;
+
+        if (user && token) {
+            set({ isLoading: false });
+            return true;
         }
 
-        if(!user && token){
+        if (token) {
             try {
                 const res = await fetch('https://foodtracker-api.oskarjenssen.com/api/user', {
                     headers: {
@@ -182,12 +185,36 @@ export const useAuthStore = create((set, get) => ({
                 set({ user: null, token: null, isLoading: false });
                 return false;
             }
-        }
-
-        if (!token) {
-            console.log('here!')
+        } else {
             set({ user: null, token: null, isLoading: false });
             return false;
+        }
+    },
+
+    getMeals: async () => {
+        const token = get().token || localStorage.getItem('token');
+
+        if (!token) return;
+
+        try {
+            const response = await fetch('https://foodtracker-api.oskarjenssen.com/api/meals', {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+                // Hvis du har Laravel API Resource, ligger dataene i json.data, 
+                // hvis det er en ren collection uten resource, er det bare json.
+                const mealsData = json.data ? json.data : json;
+                set({ meals: mealsData });
+            }
+        } catch (error) {
+            console.error('Feil ved henting av måltider:', error);
         }
     },
 }));
