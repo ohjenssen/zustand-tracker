@@ -117,6 +117,8 @@ export const useAuthStore = create((set, get) => ({
     token: null,
     isLoading: true,
     meals: null,
+    foodProducts: null,
+    foodProductsByName: null,
 
     setUser: (user) => set({ user }),
     setAuth: (token) => set({ token }),
@@ -208,8 +210,6 @@ export const useAuthStore = create((set, get) => ({
 
             if (response.ok) {
                 const json = await response.json();
-                // Hvis du har Laravel API Resource, ligger dataene i json.data, 
-                // hvis det er en ren collection uten resource, er det bare json.
                 const mealsData = json.data ? json.data : json;
                 set({ meals: mealsData });
             }
@@ -217,4 +217,55 @@ export const useAuthStore = create((set, get) => ({
             console.error('Feil ved henting av måltider:', error);
         }
     },
+
+    getFoodProducts: async () => {
+        const token = get().token || localStorage.getItem('token');
+
+        if(!token) return;
+
+        try {
+            const response = await fetch('https://foodtracker-api.oskarjenssen.com/api/food-products', {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+                const foodProducts = json.data ? json.data : json;
+                set({ foodProducts: foodProducts });
+            }
+        } catch (error) {
+            console.error('Feil ved henting av måltider:', error);
+        }
+    },
+
+    getFoodProductsByName: async (searchQuery) => {
+        const token = get().token || localStorage.getItem('token');
+
+        if(!token) return;
+
+        try {
+            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/food-products?name=${searchQuery}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+                const foodProductsByName = json.data ? json.data : json;
+                set({ foodProductsByName: foodProductsByName });
+                console.log(foodProductsByName)
+            }
+        } catch (error) {
+            console.error('Feil ved henting av måltider:', error);
+        }
+    }
 }));
