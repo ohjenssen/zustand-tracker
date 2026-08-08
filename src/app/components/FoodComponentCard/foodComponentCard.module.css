@@ -10,7 +10,7 @@
 .title {
   font-size: 1.125rem; 
   font-weight: 500;
-  color: #00ffb3;
+  color: var(--text-color-light);
   padding-left: 0.5rem;
 }
 
@@ -20,8 +20,8 @@
 }
 
 .card {
-  background-color: #00ffb3;
-  color: #003d2b;
+  background-color: var(--text-color-light);
+  color: var(--background);
   border-radius: 1rem; 
   padding: 1rem;
   display: flex;

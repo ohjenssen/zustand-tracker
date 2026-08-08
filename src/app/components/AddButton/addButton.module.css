@@ -5,7 +5,7 @@
 }
 
 .fabButton {
-  background-color: #facc15;
+  background-color: var(--button-color);
   color: #003d2b;
   padding: 1rem;
   border-radius: 9999px;

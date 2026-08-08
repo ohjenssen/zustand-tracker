@@ -15,7 +15,9 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #003d2b;
+    --text-color-light: #00ffb3;
     --foreground: #ededed;
+    --button-color: #facc15;
   }
 }
 

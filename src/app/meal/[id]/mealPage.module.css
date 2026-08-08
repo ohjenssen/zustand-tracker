@@ -2,8 +2,8 @@
 
 .main {
   min-height: 100vh;
-  background-color: #003d2b;
-  color: #ffffff;
+  background-color: var(--background);
+  color: var(--text-color-light);
   padding: 1.5rem;
   padding-bottom: 8rem;
   display: flex;
@@ -26,8 +26,8 @@
 }
 
 .fabButton {
-  background-color: #facc15; /* Tailwind yellow-400 */
-  color: #003d2b;
+  background-color: var(--button-color);
+  color: var(--background);
   padding: 1rem;
   border-radius: 9999px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -42,7 +42,7 @@
 }
 
 .loadingText {
-  color: #00ffb3;
+  color: var(--text-color-light);
   text-align: center;
   margin-top: 2.5rem;
 }

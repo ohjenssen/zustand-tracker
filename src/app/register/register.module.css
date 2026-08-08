@@ -1,6 +1,6 @@
 .container {
   min-height: 100vh;
-  background-color: #003d2b; /* Mørkegrønn bakgrunn */
+  background-color: var(--background);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,7 +11,7 @@
 .card {
   width: 100%;
   max-width: 380px;
-  background-color: #00e699; /* Den knallgrønne/minta bakgrunnen på kortet */
+  background-color: var(--text-color-light);
   border-radius: 12px;
   padding: 1.5rem;
   display: flex;
@@ -25,7 +25,7 @@
   gap: 0.5rem;
   background: none;
   border: none;
-  color: #00e699; /* Mintgrønn farge på teksten og pilen utenfor kortet */
+  color: var(--text-color-light);
   font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
@@ -53,7 +53,7 @@
 }
 
 .label {
-  color: #003d2b; /* Mørkegrønn farge på etikettene */
+  color: var(--background);
   font-size: 0.8rem;
   font-weight: 700;
 }
@@ -62,9 +62,9 @@
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 2px solid #003d2b; /* Den mørke linjen under feltet */
+  border-bottom: 2px solid var(--background);
   padding: 0.4rem 0;
-  color: #003d2b;
+  color: var(--background);
   font-size: 1rem;
   font-weight: 700;
   outline: none;
@@ -79,8 +79,8 @@
   width: 100%;
   padding: 0.9rem;
   margin-top: 1rem;
-  background-color: #ffd600; /* Knallgul knapp */
-  color: #003d2b; /* Mørkegrønn, fet tekst */
+  background-color: var(--button-color);
+  color: var(--background);
   font-size: 1.3rem;
   font-weight: 800;
   border: none;
