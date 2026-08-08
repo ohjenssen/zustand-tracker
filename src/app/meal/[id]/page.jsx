@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { useParams } from 'next/navigation';
-import FoodComponentCard from '@/app/components/FoodComponentCard';
+import FoodComponentCard from '@/app/components/FoodComponentCard/FoodComponentCard';
 import Navbar from '@/app/components/Navbar';
 import MealHeader from '@/app/components/MealHeader';
 import MealMacroStats from '@/app/components/MealMacroStats';
