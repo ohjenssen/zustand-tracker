@@ -54,7 +54,7 @@ export default function SearchContent() {
                 </h3>
                 
                 <div className={styles.resultsList}>
-                    {foodProductsByName.map((food) => (
+                    {foodProductsByName && foodProductsByName.map((food) => (
                         <SearchItem 
                             key={food.id} 
                             food={food} 
@@ -62,7 +62,7 @@ export default function SearchContent() {
                         />
                     ))}
 
-                    {query && foodProductsByName.length === 0 && (
+                    {query && foodProductsByName && foodProductsByName.length === 0 && (
                         <p className={styles.noResults}>No results found for "{query}"</p>
                     )}
 
