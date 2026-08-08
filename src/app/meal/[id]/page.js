@@ -3,7 +3,7 @@ import React from 'react';
 import { useParams } from 'next/navigation';
 import FoodComponentCard from '@/app/components/FoodComponentCard';
 import Navbar from '@/app/components/Navbar';
-import MealHeader from '@/app/components/MealHeader';
+import MealHeader from '@/app/components/MealHeader/MealHeader';
 import MealMacroStats from '@/app/components/MealMacroStats';
 import { Plus } from 'lucide-react'; 
 import Link from 'next/link';
