@@ -1,19 +1,17 @@
 "use client";
-import React from 'react';
+import styles from './mealPage.module.css';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import FoodComponentCard from '@/app/components/FoodComponentCard/FoodComponentCard';
+import FoodComponentCard from '@/app/components/FoodComponentCard';
 import Navbar from '@/app/components/Navbar';
 import MealHeader from '@/app/components/MealHeader';
 import MealMacroStats from '@/app/components/MealMacroStats';
 import { Plus } from 'lucide-react'; 
-import Link from 'next/link';
 import { useAuthStore } from '@/app/store/store';
-import styles from './mealPage.module.css';
 
 export default function MealOverviewPage() {
     const { id } = useParams();
     const meals = useAuthStore((state) => state.meals);
-    console.log('meals: ', meals)
 
     const currentMeal = meals?.find(m => m.id === parseInt(id));
 
@@ -60,8 +58,6 @@ export default function MealOverviewPage() {
                 </Link>
             </div>
         </section>
-
-        <Navbar />
     </main>
   );
 }
