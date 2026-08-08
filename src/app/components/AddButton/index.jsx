@@ -6,7 +6,6 @@ export default function AddButton({href}){
     return (
         <div className={styles.fabWrapper}>
             <Link 
-                // href={`/search?mealId=${currentMeal.id}`} 
                 href={href} 
                 className={styles.fabButton}
             >
