@@ -1,0 +1,48 @@
+/* mealPage.module.css */
+
+.main {
+  min-height: 100vh;
+  background-color: #003d2b;
+  color: #ffffff;
+  padding: 1.5rem;
+  padding-bottom: 8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.foodListSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  flex: 1 1 0%;
+}
+
+.fabWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.fabButton {
+  background-color: #facc15; /* Tailwind yellow-400 */
+  color: #003d2b;
+  padding: 1rem;
+  border-radius: 9999px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.fabButton:hover {
+  transform: scale(1.1);
+}
+
+.loadingText {
+  color: #00ffb3;
+  text-align: center;
+  margin-top: 2.5rem;
+}
