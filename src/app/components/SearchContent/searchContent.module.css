@@ -1,0 +1,48 @@
+/* searchContent.module.css */
+
+.searchBoxWrapper {
+  position: relative;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 0.875rem; 
+  color: #9ca3af;
+}
+
+.searchInput {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 0.75rem; 
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 3rem; 
+  padding-right: 1rem;
+  color: #000000;
+  border: none;
+}
+
+.searchInput:focus {
+  outline: none;
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: #00ffb3;
+}
+
+.resultsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; 
+}
+
+.noResults {
+  color: #9ca3af;
+  font-style: italic;
+}
