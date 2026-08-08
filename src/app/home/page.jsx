@@ -6,6 +6,7 @@ import { Plus } from 'lucide-react';
 import { useAuthStore } from '../store/store';
 import CalorieStats from '../components/CalorieStats';
 import Meals from '../components/Meals/Meals';
+import AddButton from '@/app/components/AddButton'
 
 export default function CalorieTrackerHome() {
     const token = useAuthStore((state) => state.token);
@@ -30,11 +31,7 @@ export default function CalorieTrackerHome() {
 
                     <Meals />
 
-                    <div className={styles.fabWrapper}>
-                        <Link href="/search?mealId=new" className={styles.fabButton}>
-                            <Plus size={32} strokeWidth={3} />
-                        </Link>
-                    </div>
+                    <AddButton href={'/search/?mealId=new'} />
                 </main>
             }
         </>

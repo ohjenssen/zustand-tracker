@@ -8,6 +8,7 @@ import MealHeader from '@/app/components/MealHeader';
 import MealMacroStats from '@/app/components/MealMacroStats';
 import { Plus } from 'lucide-react'; 
 import { useAuthStore } from '@/app/store/store';
+import AddButton from '@/app/components/AddButton';
 
 export default function MealOverviewPage() {
     const { id } = useParams();
@@ -48,15 +49,7 @@ export default function MealOverviewPage() {
                 <FoodComponentCard key={food.id || index} food={food} />
             ))}
             
-            {/* DEN GULE PLUSS-KNAPPEN */}
-            <div className={styles.fabWrapper}>
-                <Link 
-                    href={`/search?mealId=${currentMeal.id}`} 
-                    className={styles.fabButton}
-                >
-                    <Plus size={32} strokeWidth={3} />
-                </Link>
-            </div>
+            <AddButton href={`/search?mealId=${currentMeal.id}`}/>
         </section>
     </main>
   );
