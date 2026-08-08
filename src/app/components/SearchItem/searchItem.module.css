@@ -1,0 +1,29 @@
+/* searchItem.module.css */
+
+.itemLink {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+}
+
+.icon {
+  color: #00ffb3;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 1.125rem; /* text-lg */
+  color: #00ffb3;
+  transition: text-decoration 0.2s ease;
+}
+
+.itemLink:hover .title {
+  text-decoration: underline;
+}
+
+.brand {
+  opacity: 0.6;
+  font-size: 0.875rem; /* text-sm */
+}
