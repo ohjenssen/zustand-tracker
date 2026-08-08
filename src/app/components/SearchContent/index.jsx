@@ -1,56 +1,78 @@
+'use client'
+import styles from './searchContent.module.css';
 import { useSearchParams } from "next/navigation";
 import { Search } from 'lucide-react';
 import SearchItem from "../SearchItem";
-import foodData from '../../data/foodData.json';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuthStore } from "@/app/store/store";
 
 export default function SearchContent() {
-  const [query, setQuery] = useState("");
-  const searchParams = useSearchParams();
+    const [query, setQuery] = useState("");
+    const searchParams = useSearchParams();
+    
+    const getFoodProducts = useAuthStore((state) => state.getFoodProducts);
+    const foodProducts = useAuthStore((state) => state.foodProducts);
+    
+    const getFoodProductsByName = useAuthStore((state) => state.getFoodProductsByName);
+    const foodProductsByName = useAuthStore((state) => state.foodProductsByName);
+    
+    function handleSearch(e){
+        getFoodProductsByName(e);
+        setQuery(e)
+    }
+    useEffect(() => {
+        if(foodProducts){
+            return
+        } else {
+            getFoodProducts()
+        }
+    }, [])
+    // Henter ut f.eks. "1" hvis URL er /search?mealId=1
+    const mealId = searchParams.get('mealId'); 
+    
+    const filteredFood = query 
+        ? foodProducts.filter(f => f.name.toLowerCase().includes(query.toLowerCase()))
+        : [];
 
-  // Henter ut f.eks. "1" hvis URL er /search?mealId=1
-  const mealId = searchParams.get('mealId'); 
-  
-  const filteredFood = query 
-    ? foodData.filter(f => f.name.toLowerCase().includes(query.toLowerCase()))
-    : [];
+    return (
+        <>
+            {/* Search Input Box */}
+            <div className={styles.searchBoxWrapper}>
+                <Search className={styles.searchIcon} size={20} />
+                <input 
+                    type="text"
+                    placeholder="Search"
+                    className={styles.searchInput}
+                    onChange={(e) => handleSearch(e.target.value)}
+                />
+            </div>
 
-  const displayList = query ? filteredFood : foodData;
+            {/* Results Section */}
+            <section>
+                <h3 className={styles.sectionTitle}>
+                {query ? "Search results" : "Recent searches"}
+                </h3>
+                
+                <div className={styles.resultsList}>
+                    {foodProductsByName.map((food) => (
+                        <SearchItem 
+                            key={food.id} 
+                            food={food} 
+                            mealId={mealId} 
+                        />
+                    ))}
 
-  return (
-    <>
-      {/* Search Input Box */}
-      <div className="relative mb-8 mt-4">
-        <Search className="absolute left-4 top-3.5 text-gray-400" size={20} />
-        <input 
-          type="text"
-          placeholder="Search"
-          className="w-full bg-white rounded-xl py-3 pl-12 pr-4 text-black focus:outline-none"
-          onChange={(e) => setQuery(e.target.value)}
-        />
-      </div>
+                    {query && foodProductsByName.length === 0 && (
+                        <p className={styles.noResults}>No results found for "{query}"</p>
+                    )}
 
-      {/* Results Section */}
-      <section>
-        <h3 className="text-lg font-medium mb-4 text-[#00ffb3]">
-          {query ? "Search results" : "Recent searches"}
-        </h3>
-        
-        <div className="space-y-6">
-          {displayList.map((food) => (
-            <SearchItem 
-              key={food.id} 
-              id={food.id} 
-              name={food.name} 
-              brand={food.brand} 
-              mealId={mealId} 
-            />
-          ))}
-          {query && filteredFood.length === 0 && (
-            <p className="text-gray-400 italic">No results found for "{query}"</p>
-          )}
-        </div>
-      </section>
-    </>
-  );
+                    {!foodProducts && (
+                        <div className={styles.failedFoodProducts}>
+                            <p>Failed to get food products</p>
+                        </div>
+                    )}
+                </div>
+            </section>
+        </>
+    );
 }
