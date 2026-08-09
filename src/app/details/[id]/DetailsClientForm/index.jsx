@@ -13,17 +13,17 @@ export default function DetailsClientForm({ id }) {
 	const [grams, setGrams] = useState(100);
 
 	// Henter data og funksjoner direkte fra Zustand store
-	const user = useAuthStore((state) => state.user);
 	const foodProducts = useAuthStore((state) => state.foodProducts);
 	const getFoodProducts = useAuthStore((state) => state.getFoodProducts);
 	const createNewMeal = useAuthStore((state) => state.createNewMeal);
 	const updateMeal = useAuthStore((state) => state.updateMeal);
 	const getSingleMeal = useAuthStore((state) => state.getSingleMeal);
+	const getMeals = useAuthStore((state) => state.getMeals);
 
 	// Henter matprodukter dersom de ikke finnes i store enda
 	useEffect(() => {
 		if (!foodProducts) {
-		getFoodProducts();
+			getFoodProducts();
 		}
 	}, [foodProducts, getFoodProducts]);
 
@@ -78,15 +78,12 @@ export default function DetailsClientForm({ id }) {
 			// Hent måltidet
 			const mealResponse = await getSingleMeal(mealId);
 			const mealData = mealResponse?.data || mealResponse;
-			console.log('mealData: ', mealData.foodComponents);
 
 			// Mapper ut eksisterende produkter til { id, grams }
 			const existingProducts = (mealData?.foodComponents || []).map(p => ({
 				id: p.id,
 				grams: p.gramsEaten || 0
 			}));
-
-			console.log('existingProducts: ', existingProducts);
 
 			// Filtrer ut det produktet vi legger til nå hvis det allerede fantes i måltidet
 			const filteredProducts = existingProducts.filter(p => p.id !== numericId);
@@ -104,6 +101,7 @@ export default function DetailsClientForm({ id }) {
 				products: updatedProducts
 			};
 			await updateMeal(parseInt(mealId), mealObject);
+			await getMeals();
 			router.push(`/meal/${mealId}`);
 		}
 	};
