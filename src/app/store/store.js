@@ -284,7 +284,6 @@ export const useAuthStore = create((set, get) => ({
                 const json = await response.json();
                 const foodProductsByName = json.data ? json.data : json;
                 set({ foodProductsByName: foodProductsByName });
-                console.log(foodProductsByName)
             }
         } catch (error) {
             console.error('Feil ved henting av måltider:', error);
@@ -329,7 +328,6 @@ export const useAuthStore = create((set, get) => ({
                 body: JSON.stringify(mealObject)
             });
             const json = await response.json();
-            console.log('json: ', json);
             return json.id;
         } catch(error) {
 
