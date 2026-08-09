@@ -22,7 +22,6 @@ export default function MealOverviewPage() {
     }
 
     const foodComponents = currentMeal.foodComponents || [];
-    console.log('food: ', foodComponents);
 
     const totals = foodComponents.reduce((acc, food) => {
         const factor = (food.gramsEaten || 0) / 100;
@@ -43,8 +42,8 @@ export default function MealOverviewPage() {
 
         {/* Liste over matkomponenter */}
         <section className={styles.foodListSection}>
-            {foodComponents.map((food, index) => (
-                <FoodComponentCard key={food.id || index} food={food} />
+            {foodComponents.map((food) => (
+                <FoodComponentCard key={food.id} food={food} mealId={currentMeal.id}/>
             ))}
             
             <AddButton href={`/search?mealId=${currentMeal.id}`}/>
