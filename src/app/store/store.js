@@ -218,6 +218,28 @@ export const useAuthStore = create((set, get) => ({
         }
     },
 
+    getSingleMeal: async (id) => {
+        const token = get().token || localStorage.getItem('token');
+
+        if (!token) return;
+
+        try {
+            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/meals/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const json = await response.json();
+            return json;
+        } catch (error) {
+            console.error('Feil ved henting av måltider:', error);
+        }
+    },
+
     getFoodProducts: async () => {
         const token = get().token || localStorage.getItem('token');
 
@@ -267,5 +289,50 @@ export const useAuthStore = create((set, get) => ({
         } catch (error) {
             console.error('Feil ved henting av måltider:', error);
         }
-    }
+    },
+
+    createNewMeal: async (mealObject) => {
+        const token = get().token || localStorage.getItem('token');
+        
+        if(!token) return;
+        
+        try {
+            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/meals`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(mealObject)
+            });
+            const json = await response.json();
+            return json.id;
+        } catch(error) {
+
+        }
+    },
+
+    updateMeal: async (mealId, mealObject) => {
+        const token = get().token || localStorage.getItem('token');
+        
+        if(!token) return;
+        
+        try {
+            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/meals/${mealId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(mealObject)
+            });
+            const json = await response.json();
+            console.log('json: ', json);
+            return json.id;
+        } catch(error) {
+
+        }
+    },
 }));
