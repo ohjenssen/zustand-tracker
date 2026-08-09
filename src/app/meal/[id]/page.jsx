@@ -1,12 +1,9 @@
 "use client";
 import styles from './mealPage.module.css';
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import FoodComponentCard from '@/app/components/FoodComponentCard';
-import Navbar from '@/app/components/Navbar';
 import MealHeader from '@/app/components/MealHeader';
 import MealMacroStats from '@/app/components/MealMacroStats';
-import { Plus } from 'lucide-react'; 
 import { useAuthStore } from '@/app/store/store';
 import AddButton from '@/app/components/AddButton';
 
@@ -25,6 +22,7 @@ export default function MealOverviewPage() {
     }
 
     const foodComponents = currentMeal.foodComponents || [];
+    console.log('food: ', foodComponents);
 
     const totals = foodComponents.reduce((acc, food) => {
         const factor = (food.gramsEaten || 0) / 100;
