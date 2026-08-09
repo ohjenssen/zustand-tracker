@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import styles from './foodComponentCard.module.css';
 
-export default function FoodComponentCard({ food }) {
+export default function FoodComponentCard({ food, mealId }) {
     const factor = (food.gramsEaten || 0) / 100;
     const calculatedKcal = Math.round((food.kcal || 0) * factor);
     const calculatedProtein = ((food.protein || 0) * factor).toFixed(1);
@@ -16,7 +16,7 @@ export default function FoodComponentCard({ food }) {
             </h3>
 
             {/* Cardt */}
-            <Link href={`/details/${food.id}`} className={styles.card}>
+            <Link href={`/details/${food.id}?mealId=${mealId}`} className={styles.card}>
                 <div className={styles.gramBadge}>
                     {food.gramsEaten}g
                 </div>
