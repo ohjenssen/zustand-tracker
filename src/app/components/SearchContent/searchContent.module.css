@@ -8,19 +8,20 @@
   position: absolute;
   left: 1rem;
   top: 0.875rem; 
-  color: #9ca3af;
+  color: var(--background);
 }
 
 .searchInput {
   width: 100%;
-  background-color: #ffffff;
+  background-color: var(--text-color-light);
   border-radius: 0.75rem; 
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   padding-left: 3rem; 
   padding-right: 1rem;
-  color: #000000;
+  color: var(--background);
   border: none;
+  font-weight: 900;
 }
 
 .searchInput:focus {
