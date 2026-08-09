@@ -1,5 +1,6 @@
-import Link from "next/link";
+'use client';
 import { useAuthStore } from "../../store/store";
+import MealCard from "./MealCard";
 import styles from "./meals.module.css";
 
 export default function Meals() {
@@ -35,20 +36,7 @@ export default function Meals() {
                 }, { kcal: 0, protein: 0, fat: 0, carbs: 0 });
 
                 return (
-                    <Link key={meal.id} href={`/meal/${meal.id}`} className={styles.cardLink}>
-                        <div className={styles.card}>
-                            <div className={styles.titleGroup}>
-                                <span className={styles.icon}>🍴</span>
-                                <span className={styles.title}>{meal.name || `Måltid #${meal.id}`}</span>
-                            </div>
-                            <div className={styles.statsGrid}>
-                                <div className={styles.statItem}>{totals.kcal}<br/>kcal</div>
-                                <div className={styles.statItem}>{Number(totals.protein).toFixed(1)}g<br/>Prot</div>
-                                <div className={styles.statItem}>{Number(totals.fat).toFixed(1)}g<br/>Fat</div>
-                                <div className={styles.statItem}>{Number(totals.carbs).toFixed(1)}g<br/>Carbs</div>
-                            </div>
-                        </div>
-                    </Link>
+                    <MealCard key={meal.id} meal={meal} totals={totals} />
                 );
             })}
         </section>
