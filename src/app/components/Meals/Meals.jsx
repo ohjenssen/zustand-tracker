@@ -12,7 +12,7 @@ export default function Meals({ meals }) {
 
     return (
         <section className={styles.container}>
-            {meals.map(meal => {
+            {meals.map((meal, index) => {
                 const foodComponents = meal.foodComponents || [];
                 
                 const totals = foodComponents.reduce((acc, food) => {
@@ -32,7 +32,7 @@ export default function Meals({ meals }) {
                 }, { kcal: 0, protein: 0, fat: 0, carbs: 0 });
 
                 return (
-                    <MealCard key={meal.id} meal={meal} totals={totals} />
+                    <MealCard key={meal.id} index={index} meal={meal} totals={totals} />
                 );
             })}
         </section>

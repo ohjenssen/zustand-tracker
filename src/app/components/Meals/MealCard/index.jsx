@@ -6,7 +6,7 @@ import { Trash2 } from 'lucide-react';
 import styles from '../meals.module.css';
 import { useAuthStore } from '@/app/store/store';
 
-export default function MealCard({ meal, totals }) {
+export default function MealCard({ meal, totals, index }) {
   const [isOpen, setIsOpen] = useState(false);
   const deleteMeal = useAuthStore((state) => state.deleteMeal);
 
@@ -46,7 +46,7 @@ export default function MealCard({ meal, totals }) {
 			<div className={styles.card}>
 				<div className={styles.titleGroup}>
 					<span className={styles.icon}>🍴</span>
-					<span className={styles.title}>{meal.name || `Måltid #${meal.id}`}</span>
+					<span className={styles.title}>{`Måltid #${index + 1}`}</span>
 				</div>
 				<div className={styles.statsGrid}>
 					<div className={styles.statItem}>{totals.kcal}<br/>kcal</div>
