@@ -1,17 +1,13 @@
-'use client';
-import { useAuthStore } from "../../store/store";
 import MealCard from "./MealCard";
 import styles from "./meals.module.css";
 
-export default function Meals() {
-    const meals = useAuthStore((state) => state.meals);
-
+export default function Meals({ meals }) {
     if (!meals) {
         return <div className={styles.statusMessage}>Henter måltider...</div>;
     }
 
     if (meals.length === 0) {
-        return <div className={styles.statusMessage}>Ingen måltider registrert ennå.</div>;
+        return <div className={styles.statusMessage}>Ingen måltider registrert på denne dagen.</div>;
     }
 
     return (
