@@ -13,7 +13,7 @@ export default function CalorieStats({ eaten }) {
     const progressPercent = Math.min((eaten / dailyCalories) * 100, 100);
 
     return (
-        <section className="mb-8">
+        <section className="mt-8 mb-8">
             <h2 className="text-xl font-medium mb-1 text-[#00ffb3]">Eaten</h2>
             <div className="text-2xl font-bold mb-4 text-white">
                 {eaten} / <span className="text-gray-300 text-lg font-normal">{dailyCalories ? dailyCalories : <Spinner size='sm'/>} kcal</span>
