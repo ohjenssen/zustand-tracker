@@ -7,8 +7,8 @@ import styles from './register.module.css';
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('oskar_jenssen@hotmail.com');
-  const [password, setPassword] = useState('************');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
