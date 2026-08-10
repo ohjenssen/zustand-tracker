@@ -58,7 +58,6 @@ export default function DetailsClientForm({ id }) {
 
 		const numericId = parseInt(id);
 		const numericGrams = parseInt(grams) || 0;
-
 		if (mealId === 'new') {
 			const foodItemWithGrams = { 
 				products: [
@@ -70,9 +69,8 @@ export default function DetailsClientForm({ id }) {
 			};
 
 			const newMeal = await createNewMeal(foodItemWithGrams);
-			const newMealId = newMeal?.data?.id || newMeal?.id;
-			if (newMealId) {
-				router.push(`/meal/${newMealId}`);
+			if (newMeal) {
+				router.push(`/meal/${newMeal}`);
 			}
 		} else if (mealId) {
 			// Hent måltidet
