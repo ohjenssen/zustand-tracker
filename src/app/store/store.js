@@ -292,7 +292,7 @@ export const useAuthStore = create((set, get) => ({
 
     createNewMeal: async (mealObject) => {
         const token = get().token || localStorage.getItem('token');
-        
+        const getMeals = get().getMeals;
         if(!token) return;
         
         try {
@@ -306,9 +306,10 @@ export const useAuthStore = create((set, get) => ({
                 body: JSON.stringify(mealObject)
             });
             const json = await response.json();
+            getMeals();
             return json.id;
         } catch(error) {
-
+            console.error(error)
         }
     },
 
@@ -350,8 +351,6 @@ export const useAuthStore = create((set, get) => ({
                 }
             });
 
-            const json = await response.json();
-            console.log(json);
             if (response.ok){
                 getMeals();
             }
