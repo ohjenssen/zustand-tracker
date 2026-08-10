@@ -330,7 +330,33 @@ export const useAuthStore = create((set, get) => ({
             const json = await response.json();
             return json.id;
         } catch(error) {
-
+            console.error(error)
         }
     },
+
+    deleteMeal: async (mealId) => {
+        const token = get().token || localStorage.getItem('token');
+        const getMeals = get().getMeals;
+
+        if(!token) return;
+
+        try {
+            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/meals/${mealId}`, { 
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const json = await response.json();
+            console.log(json);
+            if (response.ok){
+                getMeals();
+            }
+        } catch(error) { 
+            console.error('error')
+        }
+    }
 }));
