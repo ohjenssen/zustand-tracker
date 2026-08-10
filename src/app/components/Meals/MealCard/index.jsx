@@ -13,7 +13,6 @@ export default function MealCard({ meal, totals }) {
   const handleDelete = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(`Sletter måltid med ID: ${meal.id}`);
 	deleteMeal(meal.id);
   };
 
@@ -34,12 +33,12 @@ export default function MealCard({ meal, totals }) {
 			dragElastic={0.1}
 			animate={{ x: isOpen ? -80 : 0 }}
 			onDragEnd={(e, info) => {
-			// Hvis brukeren har swipet mer enn 40px til venstre, lås den i åpen tilstand
-			if (info.offset.x < -40) {
-				setIsOpen(true);
-			} else {
-				setIsOpen(false);
-			}
+				// Hvis brukeren har swipet mer enn 40px til venstre, lås den i åpen tilstand
+				if (info.offset.x < -40) {
+					setIsOpen(true);
+				} else {
+					setIsOpen(false);
+				}
 			}}
 			className={styles.motionCard}
 		>
