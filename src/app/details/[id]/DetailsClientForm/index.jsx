@@ -9,6 +9,7 @@ export default function DetailsClientForm({ id }) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const mealId = searchParams.get('mealId');
+	const dateParam = searchParams.get('date');
 
 	const [grams, setGrams] = useState(100);
 
@@ -65,7 +66,8 @@ export default function DetailsClientForm({ id }) {
 						id: numericId,
 						grams: numericGrams
 					}
-				]
+				],
+				...(dateParam && { "date": dateParam })
 			};
 
 			const newMeal = await createNewMeal(foodItemWithGrams);
