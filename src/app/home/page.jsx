@@ -62,7 +62,7 @@ export default function CalorieTrackerHome() {
 
                     <Meals meals={filteredMeals} />
 
-                    <AddButton href={`/search/?mealId=new&date=${formattedSelectedDate}`} />
+                    <AddButton href={`/add-food/?mealId=new&date=${formattedSelectedDate}`} />
                 </main>
             }
         </>
