@@ -1,9 +1,13 @@
 import { History } from 'lucide-react';
 import Link from 'next/link';
 import styles from './searchItem.module.css';
+import { useSearchParams } from 'next/navigation';
 
 export default function SearchItem({ mealId, food }) {
-  const href = mealId ? `/details/${food.id}?mealId=${mealId}` : `/details/${food.id}`;
+  const searchParams = useSearchParams();
+  const dateParam = searchParams.get('date');
+
+  const href = mealId ? `/details/${food.id}?mealId=${mealId}&date=${dateParam}` : `/details/${food.id}&date=${dateParam}`;
 
   return (
     <Link href={href} className={styles.itemLink}>
