@@ -1,0 +1,30 @@
+.scannerWrapper {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.reader {
+  width: 100%;
+}
+
+/* Overstyr litt av standard-stilene til biblioteket for å matche mørkt/grønt tema */
+.reader button {
+  background-color: #00ffb3 !important;
+  color: #003d2b !important;
+  border: none !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.5rem !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  margin-top: 0.5rem !important;
+}
+
+.reader select {
+  padding: 0.4rem !important;
+  border-radius: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
