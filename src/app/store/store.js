@@ -294,7 +294,7 @@ export const useAuthStore = create((set, get) => ({
         const token = get().token || localStorage.getItem('token');
         const getMeals = get().getMeals;
         if(!token) return;
-        
+
         try {
             const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/meals`, {
                 method: "POST",

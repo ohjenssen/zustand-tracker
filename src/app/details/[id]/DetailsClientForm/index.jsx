@@ -10,7 +10,6 @@ export default function DetailsClientForm({ id }) {
 	const searchParams = useSearchParams();
 	const mealId = searchParams.get('mealId');
 	const dateParam = searchParams.get('date');
-
 	const [grams, setGrams] = useState(100);
 
 	// Henter data og funksjoner direkte fra Zustand store
