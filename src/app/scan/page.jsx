@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import BarcodeScanner from '@/app/components/BarcodeScanner';
+import { Suspense } from 'react';
 
 export default function ScanPage() {
   const [scannedCode, setScannedCode] = useState(null);
@@ -20,6 +21,7 @@ export default function ScanPage() {
   };
 
   return (
+    <Suspense>
     <main style={{ padding: '1rem', color: '#fff' }}>
       <h1>Skann strekkode</h1>
       
@@ -32,5 +34,6 @@ export default function ScanPage() {
         </div>
       )}
     </main>
+    </Suspense>
   );
 }
