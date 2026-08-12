@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import BarcodeScanner from '@/app/components/BarcodeScanner';
 import { Suspense } from 'react';
+import NativeBarcodeScanner from '../components/NativeBarcodeScanner';
 
 export default function ScanPage() {
   const [scannedCode, setScannedCode] = useState(null);
@@ -26,7 +27,8 @@ export default function ScanPage() {
             <h1>Skann strekkode</h1>
         
         {!scannedCode ? (
-            <BarcodeScanner onScanSuccess={handleScanSuccess} />
+            // <BarcodeScanner onScanSuccess={handleScanSuccess} />
+            <NativeBarcodeScanner onScanSuccess={handleScanSuccess} />
         ) : (
             <div>
                 <p>Fant kode: <strong>{scannedCode}</strong></p>

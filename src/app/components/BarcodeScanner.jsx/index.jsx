@@ -5,13 +5,12 @@ import styles from './barcodeScanner.module.css';
 
 export default function BarcodeScanner({ onScanSuccess, onScanError }) {
   useEffect(() => {
-    // 1. Definer spesifikt hvilke strekkodeformat vi ønsker å scanne (EAN, UPC, Code128)
+    // 1. Definer kun de mest relevante formatene for matvarer
     const formatsToSupport = [
       Html5QrcodeSupportedFormats.EAN_13,
       Html5QrcodeSupportedFormats.EAN_8,
       Html5QrcodeSupportedFormats.UPC_A,
       Html5QrcodeSupportedFormats.UPC_E,
-      Html5QrcodeSupportedFormats.CODE_128,
     ];
 
     const html5Qrcode = new Html5Qrcode("reader", {
@@ -19,16 +18,28 @@ export default function BarcodeScanner({ onScanSuccess, onScanError }) {
       verbose: false,
     });
 
+    // 2. Ytelsesoptimalisert konfigurasjon
     const config = {
-      fps: 15, // Økt FPS for raskere respons
-      qrbox: { width: 280, height: 160 }, // Rektangulær boks tilpasset 1D-strekkoder
+      fps: 30, // Maksimal opdateringsfrekvens
       aspectRatio: 1.0,
+      qrbox: (viewfinderWidth, viewfinderHeight) => {
+        return {
+          width: Math.floor(viewfinderWidth * 0.85),
+          height: Math.floor(viewfinderHeight * 0.45),
+        };
+      },
+      // Her legger vi kamerakravene for høy oppløsning (kun i config-objektet)
+      videoConstraints: {
+        facingMode: "environment",
+        width: { min: 640, ideal: 1280, max: 1920 },
+        height: { min: 480, ideal: 720, max: 1080 },
+      },
     };
 
-    // 2. Start scanneren ved å be om bakkameraet ("environment")
+    // 3. Start skanneren med KUN 1 nøkkel i det første argumentet
     html5Qrcode
       .start(
-        { facingMode: "environment" }, // Tvinger bruk av bakkamera
+        { facingMode: "environment" }, // Eksakt 1 nøkkel
         config,
         (decodedText, decodedResult) => {
           if (onScanSuccess) {
@@ -45,7 +56,6 @@ export default function BarcodeScanner({ onScanSuccess, onScanError }) {
         console.error("Klarte ikke å starte kamera:", err);
       });
 
-    // 3. Opprydding ved unmounte
     return () => {
       if (html5Qrcode.isScanning) {
         html5Qrcode
