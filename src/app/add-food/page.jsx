@@ -37,13 +37,13 @@ export default function AddFood() {
                     <Search size={28} />
                 </Link>
 
-                <button 
+                <Link 
                     className={styles.actionButton} 
                     aria-label="Scan Barcode"
-                    onClick={() => console.log('Barcode clicked')}
+                    href={`/scan`}
                     >
                     <Barcode size={28} />
-                </button>
+                </Link>
 
                 <button 
                     className={styles.actionButton} 

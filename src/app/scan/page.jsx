@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import BarcodeScanner from '@/app/components/BarcodeScanner/BarcodeScanner';
+import BarcodeScanner from '@/app/components/BarcodeScanner';
 
 export default function ScanPage() {
   const [scannedCode, setScannedCode] = useState(null);

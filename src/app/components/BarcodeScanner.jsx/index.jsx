@@ -1,49 +1,65 @@
 'use client';
-import { useEffect, useRef } from 'react';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { useEffect } from 'react';
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import styles from './barcodeScanner.module.css';
 
 export default function BarcodeScanner({ onScanSuccess, onScanError }) {
-  const scannerRef = useRef(null);
-
   useEffect(() => {
-    // Konfigurasjon for scanneren
+    // 1. Definer spesifikt hvilke strekkodeformat vi ønsker å scanne (EAN, UPC, Code128)
+    const formatsToSupport = [
+      Html5QrcodeSupportedFormats.EAN_13,
+      Html5QrcodeSupportedFormats.EAN_8,
+      Html5QrcodeSupportedFormats.UPC_A,
+      Html5QrcodeSupportedFormats.UPC_E,
+      Html5QrcodeSupportedFormats.CODE_128,
+    ];
+
+    const html5Qrcode = new Html5Qrcode("reader", {
+      formatsToSupport: formatsToSupport,
+      verbose: false,
+    });
+
     const config = {
-      fps: 10, // Hvor mange bilder per sekund scanneren leser
-      qrbox: { width: 250, height: 150 }, // Størrelse på scanne-rammen (tilpasset strekkoder)
+      fps: 15, // Økt FPS for raskere respons
+      qrbox: { width: 280, height: 160 }, // Rektangulær boks tilpasset 1D-strekkoder
       aspectRatio: 1.0,
-      showTorchButtonIfSupported: true, // Viser lommelykt-knapp på støttede enheter
     };
 
-    // Initialiserer scanneren i div-en med id "reader"
-    const html5QrcodeScanner = new Html5QrcodeScanner("reader", config, false);
-
-    html5QrcodeScanner.render(
-      (decodedText, decodedResult) => {
-        // Når en strekkode leses inn vellykket
-        if (onScanSuccess) {
-          onScanSuccess(decodedText, decodedResult);
+    // 2. Start scanneren ved å be om bakkameraet ("environment")
+    html5Qrcode
+      .start(
+        { facingMode: "environment" }, // Tvinger bruk av bakkamera
+        config,
+        (decodedText, decodedResult) => {
+          if (onScanSuccess) {
+            onScanSuccess(decodedText, decodedResult);
+          }
+        },
+        (errorMessage) => {
+          if (onScanError) {
+            onScanError(errorMessage);
+          }
         }
-      },
-      (errorMessage) => {
-        // Ved feil under scanning (f.eks. uklar strekkode)
-        if (onScanError) {
-          onScanError(errorMessage);
-        }
-      }
-    );
-
-    // Opprydding når komponenten avmonteres (fjerner kameratilgang)
-    return () => {
-      html5QrcodeScanner.clear().catch((error) => {
-        console.error("Klarte ikke å stoppe scanneren:", error);
+      )
+      .catch((err) => {
+        console.error("Klarte ikke å starte kamera:", err);
       });
+
+    // 3. Opprydding ved unmounte
+    return () => {
+      if (html5Qrcode.isScanning) {
+        html5Qrcode
+          .stop()
+          .then(() => html5Qrcode.clear())
+          .catch((err) => console.error("Feil ved stopp av scanner:", err));
+      } else {
+        html5Qrcode.clear();
+      }
     };
   }, [onScanSuccess, onScanError]);
 
   return (
     <div className={styles.scannerWrapper}>
-      {/* HTML5 QR-Code vil injisere kamera-feed her */}
       <div id="reader" className={styles.reader}></div>
     </div>
   );
