@@ -22,18 +22,18 @@ export default function ScanPage() {
 
   return (
     <Suspense>
-    <main style={{ padding: '1rem', color: '#fff' }}>
-      <h1>Skann strekkode</h1>
-      
-      {!scannedCode ? (
-        <BarcodeScanner onScanSuccess={handleScanSuccess} />
-      ) : (
-        <div>
-          <p>Fant kode: <strong>{scannedCode}</strong></p>
-          <button onClick={() => setScannedCode(null)}>Skann på nytt</button>
-        </div>
-      )}
-    </main>
+        <main style={{ padding: '1rem', color: '#fff' }}>
+            <h1>Skann strekkode</h1>
+        
+        {!scannedCode ? (
+            <BarcodeScanner onScanSuccess={handleScanSuccess} />
+        ) : (
+            <div>
+                <p>Fant kode: <strong>{scannedCode}</strong></p>
+                <button onClick={() => setScannedCode(null)}>Skann på nytt</button>
+            </div>
+        )}
+        </main>
     </Suspense>
   );
 }

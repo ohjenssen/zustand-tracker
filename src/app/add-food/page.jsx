@@ -1,13 +1,16 @@
 'use client'
+import { Suspense } from 'react';
 import styles from './addMeal.module.css';
 import { Sparkles, Search, Barcode, HelpCircle } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
-export default function AddFood() {
+// 1. Selve innholdet og logikken
+function AddFoodContent() {
     const searchParams = useSearchParams();
     const dateParam = searchParams.get('date');
     const mealId = searchParams.get('mealId');
+
     return (
         <div className={styles.container}>
             {/* Sentrert tekstinnhold */}
@@ -33,7 +36,7 @@ export default function AddFood() {
                     className={styles.actionButton} 
                     aria-label="Search Database"
                     href={`/search?mealId=${mealId}&date=${dateParam}`}
-                    >
+                >
                     <Search size={28} />
                 </Link>
 
@@ -41,7 +44,7 @@ export default function AddFood() {
                     className={styles.actionButton} 
                     aria-label="Scan Barcode"
                     href={`/scan`}
-                    >
+                >
                     <Barcode size={28} />
                 </Link>
 
@@ -49,10 +52,19 @@ export default function AddFood() {
                     className={styles.actionButton} 
                     aria-label="Help / Pre-saved Meals"
                     onClick={() => console.log('Help clicked')}
-                    >
+                >
                     <HelpCircle size={28} />
                 </button>
             </div>
         </div>
+    );
+}
+
+// 2. Eksporten som Next.js kaller (med Suspense-grense)
+export default function AddFood() {
+    return (
+        <Suspense fallback={null}>
+            <AddFoodContent />
+        </Suspense>
     );
 }
