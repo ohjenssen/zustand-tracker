@@ -49,7 +49,7 @@ function AddProductContent() {
         // Naviger tilbake til søk eller direkte til å legge til måltidet
         router.push(`/search`);
       } else {
-        alert('Kunne ikke lagre matvaren. Sjekk at alle felt er fylt ut.');
+            alert('Dette er ikke klart ennå, Synne. Takk.');
       }
     } catch (err) {
       console.error('Feil ved lagring:', err);
