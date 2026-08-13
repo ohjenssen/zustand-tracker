@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { Suspense } from 'react';
 import NativeBarcodeScanner from '../components/NativeBarcodeScanner';
 import styles from './scanPage.module.css';
+import { useRouter } from 'next/router';
 
 export default function ScanPage() {
   const [scannedCode, setScannedCode] = useState(null);
+  const router = useRouter();
 
   const handleScanSuccess = async (barcode) => {
     console.log("Strekkode funnet:", barcode);
