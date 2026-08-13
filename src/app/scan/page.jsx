@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Suspense } from 'react';
 import NativeBarcodeScanner from '../components/NativeBarcodeScanner';
 import styles from './scanPage.module.css';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export default function ScanPage() {
   const [scannedCode, setScannedCode] = useState(null);
