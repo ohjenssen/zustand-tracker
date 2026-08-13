@@ -1,0 +1,16 @@
+.title {
+    font-size: 24px;
+    color: var(--text-color-light);
+}
+
+.scannerArea {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;;
+    justify-content: center;
+    align-items: center;
+}
+
+.scannerWrapper {
+    margin: 1rem;
+}
