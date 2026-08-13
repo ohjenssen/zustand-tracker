@@ -1,18 +1,16 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import BarcodeScanner from '@/app/components/BarcodeScanner';
 import { Suspense } from 'react';
 import NativeBarcodeScanner from '../components/NativeBarcodeScanner';
+import styles from './scanPage.module.css';
 
 export default function ScanPage() {
   const [scannedCode, setScannedCode] = useState(null);
-  const router = useRouter();
 
   const handleScanSuccess = async (barcode) => {
     console.log("Strekkode funnet:", barcode);
     setScannedCode(barcode);
-
+    router.push(`/add-product?barcode=${barcode}`);
     // Eksempel: Søk opp produktet i din egen backend via strekkoden
     // const res = await fetch(`/api/food-products/barcode/${barcode}`);
     // if (res.ok) {
@@ -23,18 +21,16 @@ export default function ScanPage() {
 
   return (
     <Suspense>
-        <main style={{ padding: '1rem', color: '#fff' }}>
-            <h1>Skann strekkode</h1>
-        
-        {!scannedCode ? (
-            // <BarcodeScanner onScanSuccess={handleScanSuccess} />
-            <NativeBarcodeScanner onScanSuccess={handleScanSuccess} />
-        ) : (
-            <div>
-                <p>Fant kode: <strong>{scannedCode}</strong></p>
-                <button onClick={() => setScannedCode(null)}>Skann på nytt</button>
-            </div>
-        )}
+        <main>
+            <section className={styles.scannerArea}>
+                <h1 className={styles.title}>Skann strekkode</h1>
+                
+                {!scannedCode && (
+                    <div className={styles.scannerWrapper}>
+                        <NativeBarcodeScanner onScanSuccess={handleScanSuccess} />
+                    </div>
+                )}
+        </section>
         </main>
     </Suspense>
   );
