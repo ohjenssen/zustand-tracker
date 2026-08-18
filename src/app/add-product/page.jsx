@@ -37,7 +37,7 @@ function AddProductContent() {
 
     try {
       // Send data til backend (Laravel)
-      const res = await fetch('/api/food-product', {
+      const res = await fetch('https://foodtracker-api.oskarjenssen.com/api/food-product', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,6 +124,34 @@ function AddProductContent() {
           </div>
         </div>
 
+        <div className={styles.nutritionRow}>
+          <label htmlFor="fats" className={styles.nutritionLabel}>Fats</label>
+          <input
+            type="number"
+            id="fats"
+            name="fats"
+            min="0"
+            step="0.1"
+            value={formData.fats}
+            onChange={handleChange}
+            className={styles.nutritionInput}
+          />
+        </div>
+
+        <div className={styles.nutritionRow}>
+          <label htmlFor="carbohydrates" className={styles.nutritionLabel}>Carbohydrates</label>
+          <input
+            type="number"
+            id="carbohydrates"
+            name="carbohydrates"
+            min="0"
+            step="0.1"
+            value={formData.carbohydrates}
+            onChange={handleChange}
+            className={styles.nutritionInput}
+          />
+        </div>
+
         <div className={styles.nutritionInputsGroup}>
           <div className={styles.nutritionRow}>
             <label htmlFor="proteins" className={styles.nutritionLabel}>Proteins</label>
@@ -139,33 +167,6 @@ function AddProductContent() {
             />
           </div>
 
-          <div className={styles.nutritionRow}>
-            <label htmlFor="fats" className={styles.nutritionLabel}>Fats</label>
-            <input
-              type="number"
-              id="fats"
-              name="fats"
-              min="0"
-              step="0.1"
-              value={formData.fats}
-              onChange={handleChange}
-              className={styles.nutritionInput}
-            />
-          </div>
-
-          <div className={styles.nutritionRow}>
-            <label htmlFor="carbohydrates" className={styles.nutritionLabel}>Carbohydrates</label>
-            <input
-              type="number"
-              id="carbohydrates"
-              name="carbohydrates"
-              min="0"
-              step="0.1"
-              value={formData.carbohydrates}
-              onChange={handleChange}
-              className={styles.nutritionInput}
-            />
-          </div>
         </div>
 
         <div className={styles.buttonWrapper}>
