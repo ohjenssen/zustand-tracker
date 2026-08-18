@@ -3,11 +3,13 @@ import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 import styles from './addProduct.module.css';
+import { useAuthStore } from '../store/store';
 
 function AddProductContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const barcode = searchParams.get('barcode') || '';
+  const token = useAuthStore((state) => state.token);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -35,17 +37,18 @@ function AddProductContent() {
 
     try {
       // Send data til backend (Laravel)
-      const res = await fetch('/api/food-products', {
+      const res = await fetch('/api/food-product', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData),
       });
 
+      const newProduct = await res.json();
       if (res.ok) {
-        const newProduct = await res.json();
         // Naviger tilbake til søk eller direkte til å legge til måltidet
         router.push(`/search`);
       } else {
