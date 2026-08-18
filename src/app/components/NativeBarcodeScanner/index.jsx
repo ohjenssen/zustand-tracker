@@ -35,33 +35,32 @@ export default function NativeBarcodeScanner({ onScanSuccess }) {
         }
 
         // 2A. BUK NATIV BARCODEDETECTOR HVIS TILGJENGELIG
-        if (hasNativeDetector) {
-          const barcodeDetector = new window.BarcodeDetector({
-            formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128'],
-          });
+        // if (hasNativeDetector) {
+        //   const barcodeDetector = new window.BarcodeDetector({
+        //     formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128'],
+        //   });
 
-          const detectCode = async () => {
-            if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
-              try {
-                const barcodes = await barcodeDetector.detect(videoRef.current);
-                if (barcodes.length > 0 && !isScanned) {
-                  isScanned = true;
-                  if (onScanSuccess) onScanSuccess(barcodes[0].rawValue);
-                  return;
-                }
-              } catch (err) {
-                console.error('Deteksjonsfeil:', err);
-              }
-            }
-            if (!isScanned) {
-              animationFrameId = requestAnimationFrame(detectCode);
-            }
-          };
-
-          detectCode();
-        } 
+        //   const detectCode = async () => {
+        //     if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
+        //       try {
+        //         const barcodes = await barcodeDetector.detect(videoRef.current);
+        //         if (barcodes.length > 0 && !isScanned) {
+        //           isScanned = true;
+        //           if (onScanSuccess) onScanSuccess(barcodes[0].rawValue);
+        //           return;
+        //         }
+        //       } catch (err) {
+        //         console.error('Deteksjonsfeil:', err);
+        //       }
+        //     }
+        //     if (!isScanned) {
+        //       animationFrameId = requestAnimationFrame(detectCode);
+        //     }
+        //   };
+        //   detectCode();
+        // } 
         // 2B. FALLBACK TIL ZXING DERSOM BARCODEDETECTOR MANGLER (iOS Safari osv.)
-        else {
+
           codeReader = new BrowserMultiFormatReader();
           codeReader.decodeFromVideoElement(videoRef.current, (result, err) => {
             if (result && !isScanned) {
@@ -69,7 +68,6 @@ export default function NativeBarcodeScanner({ onScanSuccess }) {
               if (onScanSuccess) onScanSuccess(result.getText());
             }
           });
-        }
       } catch (err) {
         console.error('Kamera- eller skannerfeil:', err);
         setError('Klarte ikke å starte kameraet. Sjekk at du har gitt tillatelse.');
