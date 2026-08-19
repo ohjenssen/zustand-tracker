@@ -31,11 +31,10 @@ function ScanPageContent() {
       });
 
       const json = await res.json();
-
       if (json.length === 0) {
         router.push(`/add-product?barcode=${barcode}`);
       } else if (json.length > 0) {
-        router.push(`/add-food?mealId=${mealId}&date=${dateParam}`);
+        router.push(`/details/${json[0].id}?mealId=${mealId}&date=${dateParam}`);
       }
     } catch (err) {
       console.error('Feil ved scanning:', err);
