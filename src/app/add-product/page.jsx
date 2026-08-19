@@ -143,7 +143,6 @@ function AddProductContent() {
 
 				<div className={styles.nutritionInputsGroup}>
 
-
 					<div className={styles.nutritionRow}>
 						<label htmlFor="fat" className={styles.nutritionLabel}>
 							Fats
@@ -156,6 +155,8 @@ function AddProductContent() {
 							step="0.1"
 							onChange={handleChange}
 							className={styles.nutritionInput}
+							placeholder="20"
+							required
 						/>
 					</div>
 
@@ -171,6 +172,8 @@ function AddProductContent() {
 							step="0.1"
 							onChange={handleChange}
 							className={styles.nutritionInput}
+							placeholder="55"
+							required
 						/>
 					</div>
 
@@ -186,6 +189,8 @@ function AddProductContent() {
 							step="0.1"
 							onChange={handleChange}
 							className={styles.nutritionInput}
+							placeholder="13"
+							required
 						/>
 					</div>
 				</div>
