@@ -43,7 +43,7 @@ function AddFoodContent() {
                 <Link 
                     className={styles.actionButton} 
                     aria-label="Scan Barcode"
-                    href={`/scan`}
+                    href={`/scan?mealId=${mealId}&date=${dateParam}`}
                 >
                     <Barcode size={28} />
                 </Link>
