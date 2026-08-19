@@ -1,6 +1,6 @@
 'use client';
 import { useState, Suspense } from 'react';
-import NativeBarcodeScanner from '../components/NativeBarcodeScanner';
+import NativeBarcodeScanner from '../components/NativeBarcodeScanner/NativeBarcodeScanner';
 import styles from './scanPage.module.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Spinner from '../components/Spinner';
