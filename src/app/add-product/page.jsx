@@ -5,6 +5,7 @@ import styles from "./addProduct.module.css";
 import { useAuthStore } from "../store/store";
 import BackButton from "../components/BackButton/BackButton";
 import { ScanBarcode } from "lucide-react";
+import Spinner from "../components/Spinner/Spinner";
 
 function AddProductContent() {
 	const router = useRouter();
@@ -205,7 +206,7 @@ function AddProductContent() {
 
 export default function AddProductPage() {
 	return (
-		<Suspense fallback={<div className={styles.container}>Laster...</div>}>
+		<Suspense fallback={<div className={styles.loadingContainer}><Spinner /></div>}>
 			<AddProductContent />
 		</Suspense>
 	);
