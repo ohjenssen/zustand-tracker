@@ -5,7 +5,7 @@ import FoodComponentCard from '@/app/components/FoodComponentCard';
 import MealHeader from '@/app/components/MealHeader';
 import MealMacroStats from '@/app/components/MealMacroStats';
 import { useAuthStore } from '@/app/store/store';
-import AddButton from '@/app/components/AddButton';
+import AddButton from '@/app/components/AddButton/AddButton';
 
 export default function MealOverviewPage() {
     const { id } = useParams();
