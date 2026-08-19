@@ -18,6 +18,7 @@
   :root {
     --background: #003d2b;
     --text-color-light: #00ffb3;
+    --text-color-faded: #01c68b;
     --foreground: #ededed;
     --button-color: #facc15;
   }
