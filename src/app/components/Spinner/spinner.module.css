@@ -5,6 +5,14 @@
   vertical-align: middle;
   margin-left: 0.25rem;
   margin-right: 0.25rem;
+  /* Smooth fade-in når komponenten blir rendret */
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  will-change: opacity, transform;
+}
+
+/* Klasse som påføres når komponenten skal gjemmes/fades ut */
+.fadeOut {
+  animation: fadeOut 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
 }
 
 .spinner {
@@ -12,8 +20,8 @@
   border-style: solid;
   border-color: currentColor;
   border-right-color: transparent;
-  color: inherit; /* Tar fargen fra forelderelementet hvis ikke 'color' er oppgitt */
-  animation: spin 1s linear infinite;
+  color: inherit;
+  animation: spin 0.8s linear infinite;
 }
 
 /* Størrelser */
@@ -41,7 +49,31 @@
   border-width: 4px;
 }
 
-/* Animasjon */
+/* Keyframe for innfading (Fade-In) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Keyframe for uttoning (Fade-Out) */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+/* Spinn-animasjon */
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -51,14 +83,17 @@
   }
 }
 
-/* Redusert bevegelse for universell utforming */
+/* Redusert bevegelse */
 @media (prefers-reduced-motion: reduce) {
   .spinner {
     animation-duration: 1.5s;
   }
+  .wrapper {
+    animation-duration: 0.1s;
+  }
 }
 
-/* Skjul hjelpetekst for skjermlesere */
+/* Hjelpetekst for skjermlesere */
 .srOnly {
   position: absolute;
   width: 1px;
