@@ -1,4 +1,4 @@
-import MealCard from "./MealCard";
+import MealCard from "./MealCard/MealCard";
 import styles from "./meals.module.css";
 
 export default function Meals({ meals }) {

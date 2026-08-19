@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import styles from './page.module.css';
-import LandingRedirect from './components/LandingRedirect';
+import LandingRedirect from './components/LandingRedirect/LandingRedirect';
 
 export default function LandingPage() {
     return (

@@ -5,7 +5,7 @@ import { useAuthStore } from '../store/store';
 import CalorieStats from '../components/CalorieStats';
 import Meals from '../components/Meals/Meals';
 import AddButton from '@/app/components/AddButton/AddButton';
-import DateNavigator from '../components/DateNavigator';
+import DateNavigator from '../components/DateNavigator/DateNavigator';
 
 export default function CalorieTrackerHome() {
     const token = useAuthStore((state) => state.token);

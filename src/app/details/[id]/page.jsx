@@ -1,4 +1,4 @@
-import DetailsClientForm from './DetailsClientForm';
+import DetailsClientForm from './DetailsClientForm/DetailsClientForm';
 
 export default async function DetailsPage({ params }) {
   const { id } = await params; 
