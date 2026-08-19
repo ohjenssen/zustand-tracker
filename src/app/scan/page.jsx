@@ -3,7 +3,7 @@ import { useState, Suspense } from 'react';
 import NativeBarcodeScanner from '../components/NativeBarcodeScanner/NativeBarcodeScanner';
 import styles from './scanPage.module.css';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Spinner from '../components/Spinner';
+import Spinner from '../components/Spinner/Spinner';
 import { useAuthStore } from '../store/store';
 
 // 1. Selve logikken og UI-et skilt ut i egen komponent

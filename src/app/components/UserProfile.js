@@ -1,6 +1,6 @@
 import { UserCircle, Edit2 } from 'lucide-react';
 import { useUserStore } from '../store/store';
-import Spinner from './Spinner';
+import Spinner from './Spinner/Spinner';
 import { useAuthStore } from '../store/store';
 import { useRouter } from 'next/navigation';
 

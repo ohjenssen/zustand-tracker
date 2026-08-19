@@ -1,5 +1,5 @@
 import { useAuthStore } from "../store/store";
-import Spinner from "./Spinner";
+import Spinner from "./Spinner/Spinner";
 
 export default function CalorieStats({ eaten }) {
     const user = useAuthStore((state) => state.user);

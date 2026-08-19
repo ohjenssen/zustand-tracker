@@ -1,5 +1,5 @@
 import { useUserStore } from '../store/store';
-import Spinner from './Spinner';
+import Spinner from './Spinner/Spinner';
 
 export default function UserSettings({ onClose }) {
   const name = useUserStore((state) => state.name);
