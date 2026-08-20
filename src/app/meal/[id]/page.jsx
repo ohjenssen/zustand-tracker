@@ -1,7 +1,7 @@
 "use client";
 import styles from './mealPage.module.css';
 import { useParams } from 'next/navigation';
-import FoodComponentCard from '@/app/components/FoodComponentCard/FoodComponentCart';
+import FoodComponentCard from '@/app/meal/[id]/FoodComponentCard/FoodComponentCart';
 import MealHeader from '@/app/components/MealHeader/MealHeader';
 import MealMacroStats from '@/app/components/MealMacroStats/MealMacroStats';
 import { useAuthStore } from '@/app/store/store';
