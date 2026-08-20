@@ -2,7 +2,7 @@
 import styles from './mealPage.module.css';
 import { useParams } from 'next/navigation';
 import FoodComponentCard from '@/app/meal/[id]/FoodComponentCard/FoodComponentCart';
-import MealHeader from '@/app/components/MealHeader/MealHeader';
+import MealHeader from '@/app/meal/[id]/MealHeader/MealHeader';
 import MealMacroStats from '@/app/components/MealMacroStats/MealMacroStats';
 import { useAuthStore } from '@/app/store/store';
 import AddButton from '@/app/components/AddButton/AddButton';
