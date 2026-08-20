@@ -1,0 +1,82 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal {
+  background-color: #00ffb3;
+  border-radius: 1.5rem;
+  width: 100%;
+  max-width: 24rem; /* Tilsvarer max-w-sm */
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  position: relative;
+  box-sizing: border-box;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #003d2b;
+  margin-top: 1.5rem;
+  display: block;
+}
+
+.input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #003d2b;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: #003d2b;
+  font-weight: 500;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-bottom-color: rgba(0, 61, 43, 0.6);
+}
+
+.saveButton {
+  margin-top: 2rem;
+  width: 100%;
+  background-color: #003d2b;
+  color: #00ffb3;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.saveButton:hover {
+  opacity: 0.9;
+}
+
+.saveButton:active {
+  transform: scale(0.98);
+}
+
+/* Skjuler h2-tittelen visuelt (erstatter 'hidden' i Tailwind hvis den skal være tilgjengelig for skjermlesere) */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

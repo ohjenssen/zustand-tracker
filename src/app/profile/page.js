@@ -1,5 +1,5 @@
 import Navbar from '../components/Navbar/Navbar';
-import ProfileContainer from '../components/ProfileContainer';
+import ProfileContainer from '../components/ProfileContainer/ProfileContainer';
 import { getUser } from '../utils/getUser';
 
 export default async function ProfilePage() {

@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { useUserStore } from '../store/store'; 
-import UserProfile from './UserProfile';
-import UserSettings from './UserSettings';
+import { useUserStore } from '../../store/store'; 
+import UserProfile from './UserProfile/UserProfile';
+import UserSettings from './UserSettings/UserSettings';
 
 export default function ProfileContainer() {
   const [isEditing, setIsEditing] = useState(false);
