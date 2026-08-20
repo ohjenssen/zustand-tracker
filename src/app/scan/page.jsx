@@ -14,7 +14,7 @@ function ScanPageContent() {
   // hooken kalles nå trygt under Suspense-grensen
   const searchParams = useSearchParams();
   const dateParam = searchParams.get('date');
-  const mealId = searchParams.get('meal');
+  const mealId = searchParams.get('mealId');
 
   const router = useRouter();
 
@@ -47,7 +47,7 @@ function ScanPageContent() {
       <section className={styles.scannerArea}>
         {!scannedCode && (
           <>
-            <h1 className={styles.title}>Skann strekkode</h1>
+            <h1 className={styles.title}>Skann strekkode for måtlid {mealId}</h1>
             <div className={styles.scannerWrapper}>
               <NativeBarcodeScanner onScanSuccess={handleScanSuccess} />
             </div>

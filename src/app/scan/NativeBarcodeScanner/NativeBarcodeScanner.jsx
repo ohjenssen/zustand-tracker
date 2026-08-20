@@ -1,7 +1,8 @@
-'use client';
-import { useEffect, useRef, useState } from 'react';
-import { BrowserMultiFormatReader, NotFoundException, ChecksumException, FormatException } from '@zxing/library';
-import styles from './barcodeScanner.module.css';
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { BrowserMultiFormatReader } from "@zxing/browser";
+import styles from "./barcodeScanner.module.css";
 
 export default function NativeBarcodeScanner({ onScanSuccess }) {
   const videoRef = useRef(null);
@@ -9,14 +10,18 @@ export default function NativeBarcodeScanner({ onScanSuccess }) {
 
   useEffect(() => {
     let stream = null;
+    let animationFrameId = null;
     let codeReader = null;
     let isScanned = false;
 
     async function startScanner() {
+      // Sjekk om det native BarcodeDetector API-et faktisk eksisterer
+      const hasNativeDetector = "BarcodeDetector" in window;
       try {
+        // 1. Start kamerastream (prøv bakkamera først, fall tilbake til standard kamera)
         const constraints = {
           video: {
-            facingMode: { ideal: 'environment' },
+            facingMode: { ideal: "environment" },
             width: { ideal: 1280 },
             height: { ideal: 720 },
           },
@@ -31,44 +36,34 @@ export default function NativeBarcodeScanner({ onScanSuccess }) {
 
         codeReader = new BrowserMultiFormatReader();
 
-        // Start dekoding fra video-elementet
         codeReader.decodeFromVideoElement(videoRef.current, (result, err) => {
           if (result && !isScanned) {
             isScanned = true;
+
             if (onScanSuccess) onScanSuccess(result.getText());
-          }
-
-          // Håndtering av feilmeldinger per ramme:
-          if (err) {
-            // Ignorer forventede scanner-feil når ingen/halv strekkode oppdages i rammen
-            const isExpectedException = 
-              err instanceof NotFoundException || 
-              err instanceof ChecksumException || 
-              err instanceof FormatException;
-
-            if (!isExpectedException) {
-              // Kun logg dersom det oppstår en uventet kritisk feil
-              // console.error(err); 
-            }
           }
         });
       } catch (err) {
-        console.error('Kamera- eller skannerfeil:', err);
-        setError('Klarte ikke å starte kameraet. Sjekk at du har gitt tillatelse.');
+        console.error("Kamera- eller skannerfeil:", err);
+
+        setError(
+          "Klarte ikke å starte kameraet. Sjekk at du har gitt tillatelse.",
+        );
       }
     }
 
     startScanner();
 
-    // Viktig opprydding
+    // Opprydding
     return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+
       if (stream) {
         stream.getTracks().forEach((track) => track.stop());
       }
-      if (codeReader) {
-        // Stopper skanneloopen fullstendig når komponenten unmountes
-        codeReader.reset();
-      }
+      // ZXing har ingen direkte destroy-metode på reader, men at streamen stoppes er nok
     };
   }, [onScanSuccess]);
 
@@ -79,6 +74,7 @@ export default function NativeBarcodeScanner({ onScanSuccess }) {
   return (
     <div className={styles.scannerWrapper}>
       <video ref={videoRef} className={styles.videoFeed} playsInline muted />
+
       <div className={styles.overlay}>
         <div className={styles.scanTarget} />
       </div>
