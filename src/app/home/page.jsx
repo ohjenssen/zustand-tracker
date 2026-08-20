@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import styles from './home.module.css';
 import { useAuthStore } from '../store/store';
 import CalorieStats from '../components/CalorieStats';
-import Meals from '../components/Meals/Meals';
+import Meals from './Meals/Meals';
 import AddButton from '@/app/components/AddButton/AddButton';
 import DateNavigator from '../components/DateNavigator/DateNavigator';
 
