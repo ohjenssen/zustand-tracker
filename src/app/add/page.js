@@ -3,7 +3,7 @@ import { Search, ScanBarcode, Sparkles, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '../components/Navbar/Navbar';
 import ActionButton from '../components/ActionButton/ActionButton';
-import EmptyState from '../components/EmptyState';
+import EmptyState from './EmptyState/EmptyState';
 
 export default function AddMealPage() {
   return (

@@ -1,0 +1,26 @@
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 20rem; 
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 1.875rem; 
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.25;
+  color: var(--text-color-light);
+}
+
+.description {
+  font-size: 0.875rem;
+  line-height: 1.625;
+  opacity: 0.9;
+  color: var(--text-color-light);
+  margin: 0;
+}
