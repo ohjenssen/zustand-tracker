@@ -1,4 +1,4 @@
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 import ProfileContainer from '../components/ProfileContainer';
 import { getUser } from '../utils/getUser';
 

@@ -1,6 +1,6 @@
 import "./globals.css";
 import AuthInitializer from "./components/AuthInitializer";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 
 export const metadata = {
   title: 'ScanMaster',

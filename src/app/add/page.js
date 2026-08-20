@@ -1,7 +1,7 @@
 import React from 'react';
 import { Search, ScanBarcode, Sparkles, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 import ActionButton from '../components/ActionButton';
 import EmptyState from '../components/EmptyState';
 
