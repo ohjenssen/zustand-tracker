@@ -4,6 +4,7 @@ import styles from './addMeal.module.css';
 import { Sparkles, Search, Barcode, HelpCircle } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import BackButton from '@/app/components/BackButton/BackButton';
 
 // 1. Selve innholdet og logikken
 function AddFoodContent() {
@@ -65,6 +66,7 @@ export default function AddFood() {
     return (
         <Suspense fallback={null}>
             <AddFoodContent />
+            <BackButton />
         </Suspense>
     );
 }
