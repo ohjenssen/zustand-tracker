@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import styles from './home.module.css';
 import { useAuthStore } from '../store/store';
-import CalorieStats from '../components/CalorieStats';
+import CalorieStats from '../components/CalorieStats/CalorieStats';
 import Meals from './Meals/Meals';
 import AddButton from '@/app/components/AddButton/AddButton';
 import DateNavigator from './DateNavigator/DateNavigator';
