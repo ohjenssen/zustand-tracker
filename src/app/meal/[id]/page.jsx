@@ -6,6 +6,7 @@ import MealHeader from '@/app/meal/[id]/MealHeader/MealHeader';
 import MealMacroStats from '@/app/meal/[id]/MealMacroStats/MealMacroStats';
 import { useAuthStore } from '@/app/store/store';
 import AddButton from '@/app/components/AddButton/AddButton';
+import BackButton from '@/app/components/BackButton/BackButton';
 
 export default function MealOverviewPage() {
     const { id } = useParams();
@@ -47,6 +48,7 @@ export default function MealOverviewPage() {
             ))}
             
             <AddButton href={`/search?mealId=${currentMeal.id}`}/>
+            <BackButton />
         </section>
     </main>
   );

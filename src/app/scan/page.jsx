@@ -1,10 +1,11 @@
 'use client';
-import { useState, Suspense } from 'react';
-import NativeBarcodeScanner from './NativeBarcodeScanner/NativeBarcodeScanner';
 import styles from './scanPage.module.css';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Spinner from '../components/Spinner/Spinner';
+import NativeBarcodeScanner from './NativeBarcodeScanner/NativeBarcodeScanner';
+import Spinner from '@/app/components/Spinner/Spinner';
 import { useAuthStore } from '../store/store';
+import BackButton from '@/app/components/BackButton/BackButton';
 
 function ScanPageContent() {
   const [scannedCode, setScannedCode] = useState(null);
@@ -65,6 +66,7 @@ export default function ScanPage() {
   return (
     <Suspense fallback={<div className={styles.scannerArea}><Spinner /></div>}>
       <ScanPageContent />
+      <BackButton />
     </Suspense>
   );
 }
