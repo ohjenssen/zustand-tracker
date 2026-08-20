@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Spinner from '../components/Spinner/Spinner';
 import { useAuthStore } from '../store/store';
 
-// 1. Selve logikken og UI-et skilt ut i egen komponent
 function ScanPageContent() {
   const [scannedCode, setScannedCode] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
