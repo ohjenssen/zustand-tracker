@@ -2,7 +2,7 @@
 import styles from './searchContent.module.css';
 import { useSearchParams } from "next/navigation";
 import { Search } from 'lucide-react';
-import SearchItem from "../../components/SearchItem/SearchItem";
+import SearchItem from "../SearchItem/SearchItem";
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/app/store/store";
 
