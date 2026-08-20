@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { useUserStore } from '../../store/store'; 
+import { useUserStore } from '@/app/store/store'; 
 import UserProfile from './UserProfile/UserProfile';
 import UserSettings from './UserSettings/UserSettings';
 

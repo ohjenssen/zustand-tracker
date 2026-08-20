@@ -1,5 +1,5 @@
-import { useUserStore } from '../store/store';
-import Spinner from './Spinner/Spinner';
+import { useUserStore } from '@/app/store/store';
+import Spinner from '@/app/components/Spinner/Spinner';
 import styles from './userSettings.module.css';
 
 export default function UserSettings({ onClose }) {

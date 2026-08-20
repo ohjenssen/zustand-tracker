@@ -1,5 +1,5 @@
-import { useAuthStore } from "../store/store";
-import Spinner from "./Spinner/Spinner";
+import { useAuthStore } from "@/app/store/store";
+import Spinner from "@/app/components/Spinner/Spinner";
 import styles from "./calorieStats.module.css";
 
 export default function CalorieStats({ eaten }) {
