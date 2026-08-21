@@ -8,6 +8,13 @@
   box-sizing: border-box;
 }
 
+.title {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--background);
+  text-align: center;
+}
+
 .card {
   width: 100%;
   max-width: 380px;
@@ -92,4 +99,26 @@
 .submitButton:active {
   transform: scale(0.98);
   opacity: 0.9;
+}
+
+.nutritionInput {
+  background: transparent;
+  border: none;
+  color: var(--text-color-light);
+  font-size: 1.2rem;
+  text-align: right;
+  width: 100%;
+  outline: none;
+  border-bottom: 2px solid var(--background);
+}
+
+/* Fjerner piler fra number-input for at det skal se ut som ren tekst */
+.nutritionInput::-webkit-outer-spin-button,
+.nutritionInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.nutritionInput[type=number] {
+  -moz-appearance: textfield;
 }

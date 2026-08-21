@@ -2,12 +2,17 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
 import styles from './register.module.css';
+import BackButton from '../components/BackButton/BackButton';
 
 export default function RegisterPage() {
   const router = useRouter();
+
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [protein, setProtein] = useState('');
+  const [fat, setFat] = useState('');
+  const [carbohydrate, setCarbohydrate] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
@@ -19,20 +24,25 @@ export default function RegisterPage() {
   return (
     <main className={styles.container}>
       <div style={{ width: '100%', maxWidth: '380px' }}>
-        
-        {/* Tilbake-knapp øverst til venstre for kortet */}
-        <button 
-          type="button" 
-          onClick={() => router.back()} 
-          className={styles.backButton}
-        >
-          <ArrowLeft size={24} />
-          <span>Back</span>
-        </button>
 
         {/* Det knallgrønne skjema-kortet */}
         <div className={styles.card}>
           <form onSubmit={handleSubmit} className={styles.form}>
+            <h1 className={styles.title}>Registrer</h1>
+
+            <div className={styles.inputGroup}>
+                <label htmlFor="name" className={styles.label}>
+                    Name
+                </label>
+                <input
+                    id="name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className={styles.input}
+                    required
+                />
+            </div>
             
             {/* Email-felt */}
             <div className={styles.inputGroup}>
@@ -48,6 +58,49 @@ export default function RegisterPage() {
                 required
               />
             </div>
+
+            <div className={styles.inputGroup}>
+                <label htmlFor="protein" className={styles.label}>
+                    Protein
+                </label>
+                <input
+                    id="protein"
+                    type="number"
+                    value={protein}
+                    onChange={(e) => setProtein(e.target.value)}
+                    className={styles.nutritionInput}
+                    required
+                />
+            </div>
+
+            <div className={styles.inputGroup}>
+                <label htmlFor="fat" className={styles.label}>
+                    Fat
+                </label>
+                <input
+                    id="fat"
+                    type="number"
+                    value={fat}
+                    onChange={(e) => setFat(e.target.value)}
+                    className={styles.nutritionInput}
+                    required
+                />
+            </div>
+
+            <div className={styles.inputGroup}>
+                <label htmlFor="carbohydrate" className={styles.label}>
+                    Carbohydrates
+                </label>
+                <input
+                    id="carbohydrate"
+                    type="number"
+                    value={carbohydrate}
+                    onChange={(e) => setCarbohydrate(e.target.value)}
+                    className={styles.nutritionInput}
+                    required
+                />
+            </div>
+
 
             {/* Passord-felt */}
             <div className={styles.inputGroup}>
@@ -73,6 +126,8 @@ export default function RegisterPage() {
         </div>
 
       </div>
+
+      <BackButton />
     </main>
   );
 }
