@@ -14,15 +14,7 @@ export default function MealOverviewPage() {
 
     const currentMeal = meals?.find(m => m.id === parseInt(id));
 
-    if (!meals || !currentMeal) {
-        return (
-            <main className={styles.main}>
-                <p className={styles.loadingText}>Henter måltid...</p>
-            </main>
-        );
-    }
-
-    const foodComponents = currentMeal.foodComponents || [];
+    const foodComponents = currentMeal?.foodComponents || [];
 
     const totals = foodComponents.reduce((acc, food) => {
         const factor = (food.gramsEaten || 0) / 100;
@@ -36,20 +28,24 @@ export default function MealOverviewPage() {
 
   return (
     <main className={styles.main}>
-      
-        <MealHeader name={currentMeal.name || `Måltid #${currentMeal.id}`} />
 
-        <MealMacroStats totals={totals} />
-
-        {/* Liste over matkomponenter */}
-        <section className={styles.foodListSection}>
-            {foodComponents.map((food) => (
-                <FoodComponentCard key={food.id} food={food} mealId={currentMeal.id}/>
-            ))}
+        {!meals || !currentMeal ? 
+            <p className={styles.loadingText}>Henter måltid...</p> :
             
-            <AddButton href={`/add-food?mealId=${currentMeal.id}`}/>
-            <BackButton />
-        </section>
+            <>
+                <MealHeader name={currentMeal.name || `Måltid #${currentMeal.id}`} />
+                <MealMacroStats totals={totals} />
+            
+                <section className={styles.foodListSection}>
+                    {foodComponents.map((food) => (
+                        <FoodComponentCard key={food.id} food={food} mealId={currentMeal.id}/>
+                    ))}    
+                    <AddButton href={`/add-food?mealId=${currentMeal.id}`}/>
+                </section>
+            </>
+        }
+
+        <BackButton />
     </main>
   );
 }
