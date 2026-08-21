@@ -47,7 +47,7 @@ export default function MealOverviewPage() {
                 <FoodComponentCard key={food.id} food={food} mealId={currentMeal.id}/>
             ))}
             
-            <AddButton href={`/search?mealId=${currentMeal.id}`}/>
+            <AddButton href={`/add-food?mealId=${currentMeal.id}`}/>
             <BackButton />
         </section>
     </main>
