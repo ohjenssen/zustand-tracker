@@ -1,6 +1,5 @@
 import "./globals.css";
 import AuthInitializer from "./components/AuthInitializer";
-import Navbar from "./components/Navbar/Navbar";
 
 export const metadata = {
   title: 'ScanMaster',
@@ -23,7 +22,6 @@ export default async function RootLayout({ children }) {
             <AuthInitializer />
             <body className="min-h-full flex flex-col">
                 {children}
-                <Navbar />
             </body>
         </html>
     );

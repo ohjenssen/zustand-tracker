@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import styles from './login.module.css';
 import { useAuthStore } from '../store/store';
+import BackButton from '@/app/components/BackButton/BackButton';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -103,6 +104,8 @@ export default function LoginPage() {
                 </div>
 
             </div>
+
+            <BackButton />
         </main>
     );
 }

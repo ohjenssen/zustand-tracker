@@ -6,6 +6,7 @@ import CalorieStats from './CalorieStats/CalorieStats';
 import Meals from './Meals/Meals';
 import AddButton from '@/app/components/AddButton/AddButton';
 import DateNavigator from './DateNavigator/DateNavigator';
+import Navbar from '@/app/components/Navbar/Navbar';
 
 export default function CalorieTrackerHome() {
     const token = useAuthStore((state) => state.token);
@@ -65,6 +66,7 @@ export default function CalorieTrackerHome() {
                     <AddButton href={`/add-food/?mealId=new&date=${formattedSelectedDate}`} />
                 </main>
             }
+            <Navbar />
         </>
     );
 }

@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import SearchContent from '@/app/search/SearchContent';
+import BackButton from '@/app/components/BackButton/BackButton';
 
 export default function SearchPage() {
 	return (
@@ -7,6 +8,7 @@ export default function SearchPage() {
 			<Suspense fallback={<div className="text-white">Loading search...</div>}>
 				<SearchContent />
 			</Suspense>
+			<BackButton />
 		</main>
 	);
 }
