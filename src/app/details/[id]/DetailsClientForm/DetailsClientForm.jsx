@@ -107,15 +107,7 @@ export default function DetailsClientForm({ id }) {
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.titleContainer}>
-				<button onClick={() => router.back()} className={styles.backButton}>
-					<ChevronLeft size={32} />
-				</button>
-
-				<h1 className={styles.title}>{food.name}</h1>
-
-				<div></div>
-			</div>
+			<h1 className={styles.title}>{food.name}</h1>
 		
 			<div className={styles.statsContainer}>
 				{[
