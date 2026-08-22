@@ -9,7 +9,7 @@ import styles from './userProfile.module.css';
 export default function UserProfile({ onEdit = false }) {
   const isLoading = useAuthStore((state) => state.isLoading);
   const user = useAuthStore((state) => state.user);
-
+  
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [protein, setProtein] = useState(0);
@@ -46,7 +46,7 @@ export default function UserProfile({ onEdit = false }) {
   return (
     <>
       {isLoading ? (
-        <Spinner />
+        <Spinner container={true}/>
       ) : (
         <div className={styles.container}>
           {/* Edit Icon top right */}

@@ -1,12 +1,11 @@
-import { useUserStore, useAuthStore } from '@/app/store/store';
+import { useAuthStore } from '@/app/store/store';
 import Spinner from '@/app/components/Spinner/Spinner';
 import styles from './userSettings.module.css';
 import LogoutButton from '@/app/components/LogoutButton/LogoutButton';
 
 export default function UserSettings({ onClose }) {
-	const user = useAuthStore((state) => state.user);;
-	const loading = useUserStore((state) => state.loading);
-	const updateUserInDB = useUserStore((state) => state.updateUserInDB);
+	const user = useAuthStore((state) => state.user);
+	const loading = useAuthStore((state) => state.loading);
 
 	const handleSave = (e) => {
 		e.preventDefault();
@@ -21,7 +20,7 @@ export default function UserSettings({ onClose }) {
 	return (
 		<>
 			{ loading ? (
-				<Spinner size='lg'/>
+				<Spinner container={true}/>
 			) : (
 				<div className={styles.overlay} onClick={onClose}>
 					<form

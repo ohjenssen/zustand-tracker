@@ -55,8 +55,8 @@ function ScanPageContent() {
           </>
         )}
         
-        {isLoading && <Spinner />}
       </section>
+      {isLoading && <Spinner />}
     </main>
   );
 }
