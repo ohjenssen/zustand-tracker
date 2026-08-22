@@ -1,55 +1,5 @@
 import { create } from 'zustand'
 
-export const useUserStore = create((set, get) => ({
-  name: '',
-  email: '',
-  age: 0,
-  dailyCalories: 0,
-  loading: false,
-
-  fetchUser: async () => {
-    if (get().name) return; // Hvis vi allerede har dataen, ikke hent den på nytt
-    set({ loading: true });
-    try {
-      const res = await fetch("http://localhost:3000/api/user");
-      const data = await res.json();
-      
-      set({
-        name: data.user,
-        email: data.email,
-        age: data.age,
-        dailyCalories: data.dailyCalories,
-        loading: false,
-      });
-    } catch (err) {
-      set({ loading: false });
-      console.error("Feil ved henting av bruker:", err);
-    }
-  },
-
-  updateUserInDB: async (updatedFields) => {
-    const currentFields = get();
-    set(updatedFields);
-
-    try {
-        const res = await fetch("http://localhost:3000/api/user", {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                user: updatedFields.name || currentFields.name,
-                email: updatedFields.email || currentFields.email,
-                age: updatedFields.age || currentFields.age,
-                dailyCalories: updatedFields.dailyCalories || currentFields.dailyCalories,
-            }),
-        });
-
-        if (!res.ok) throw new Error("error");
-    } catch (err) {
-        console.error("Error", err);
-    }
-}
-}));
-
 export const useAuthStore = create((set, get) => ({
     user: null,
     token: null,
