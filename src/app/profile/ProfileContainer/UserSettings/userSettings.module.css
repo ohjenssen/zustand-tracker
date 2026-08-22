@@ -80,3 +80,9 @@
   white-space: nowrap;
   border-width: 0;
 }
+
+.logoutContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

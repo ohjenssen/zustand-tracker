@@ -1,17 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { UserCircle, Edit2, X } from 'lucide-react';
+import { UserCircle, Edit2, X, Ellipsis } from 'lucide-react';
 import { useAuthStore } from '../../../store/store';
 import Spinner from '@/app/components/Spinner/Spinner';
-import { useRouter } from 'next/navigation';
 import styles from './userProfile.module.css';
-import { Ellipsis } from 'lucide-react';
 
 export default function UserProfile({ onEdit = false }) {
-  const router = useRouter();
-
-  const logout = useAuthStore((state) => state.logout);
   const isLoading = useAuthStore((state) => state.isLoading);
   const user = useAuthStore((state) => state.user);
 
@@ -36,13 +31,6 @@ export default function UserProfile({ onEdit = false }) {
 
   const totalDailyCalories = getTotalCalories();
   const estimatedNewCalories = getTotalCalories(protein, carbs, fat);
-
-  function handleLogout() {
-    logout();
-    setTimeout(() => {
-      router.push('/');
-    }, 1000);
-  }
 
   // Dummy-funksjon for oppdatering av makronæringsstoffer
   const handleSaveMacros = (e) => {
@@ -112,8 +100,6 @@ export default function UserProfile({ onEdit = false }) {
               </div>
             </div>
           </div>
-
-          <button onClick={handleLogout} className={styles.logoutButton} type="button">Log out</button>
 
           {/* Modal for redigering av makroer */}
           {isModalOpen && (
