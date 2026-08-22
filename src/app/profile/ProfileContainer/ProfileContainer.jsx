@@ -1,18 +1,10 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { useUserStore } from '@/app/store/store'; 
+import { useState } from 'react';
 import UserProfile from './UserProfile/UserProfile';
 import UserSettings from './UserSettings/UserSettings';
 
 export default function ProfileContainer() {
   const [isEditing, setIsEditing] = useState(false);
-  
-  const fetchUser = useUserStore((state) => state.fetchUser);
-
-  useEffect(() => {
-    fetchUser(); 
-    
-  }, [fetchUser]);
 
   return (
     <>
