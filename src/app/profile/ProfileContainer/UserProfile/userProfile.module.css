@@ -32,13 +32,12 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  align-self: flex-start;
   margin-top: 2.5rem;
   margin-bottom: 5rem;
 }
 
 .avatarIcon {
-  color: #ffffff;
+  color: var(--text-color-light);
   flex-shrink: 0;
 }
 
@@ -50,46 +49,52 @@
 .name {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-color-light);
   margin: 0;
 }
 
 .email {
   font-size: 0.875rem;
-  color: var(--text-color-light);
   opacity: 0.8;
   margin: 0;
 }
 
-.age {
-  font-size: 0.875rem;
-  color: var(--text-color-light);
-  opacity: 0.8;
-  margin-top: 0.5rem;
-  margin-bottom: 0;
-}
-
-.statsContainer {
-  flex: 1;
+.stats {
+  /* flex: 1; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: 5rem;
 }
 
 .statsTitle {
   font-size: 1.5rem;
   font-weight: 500;
-  color: var(--text-color-light);
   margin-bottom: 1rem;
 }
 
-.statsValue {
-  font-size: 3.75rem;
+.kcalLabel {
+  font-size: 2rem;
   font-weight: 700;
-  color: var(--text-color-light);
+}
+
+.statsContainer {
+  width: 300px; 
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+}
+
+.labelContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.statsValue {
+  font-size: 1rem;
+  font-weight: 700;
   margin: 0;
 }
 
@@ -102,16 +107,187 @@
   padding: 0.75rem 2rem;
   border-radius: 9999px;
   cursor: pointer;
-  margin-top: auto;
-  margin-bottom: 2rem;
+  margin-top: 3rem;
   transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
 }
 
 .logoutButton:hover {
   background-color: var(--text-color-light);
-  color: #003d2b;
+  color: var(--background);
 }
 
 .logoutButton:active {
   transform: scale(0.95);
+}
+
+
+
+
+
+/* ---------- Modal ---------- */
+/* Tittel med inline-redigeringsikon */
+.titleWithEdit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.titleWithEdit .statsTitle {
+  margin-bottom: 0;
+}
+
+.inlineEditBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-color-light);
+  cursor: pointer;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.inlineEditBtn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Modal Styling */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modalCard {
+  background-color: var(--background);
+  color: var(--text-color-light);
+  border-radius: 1.25rem;
+  padding: 1.75rem;
+  width: 100%;
+  max-width: 360px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: transparent;
+  border: none;
+  color: var(--text-color-light);
+  cursor: pointer;
+}
+
+.modalTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.modalSubtitle {
+  font-size: 0.875rem;
+  color: var(--text-color-faded);
+  margin: 0 0 1.5rem 0;
+}
+
+.sliderForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sliderGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sliderHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.sliderValue {
+  font-weight: 700;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--text-color-light);
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #d9381e; /* Mørkerød knapp fra bildet */
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.slider::-webkit-slider-runnable-track {
+    background: var(--text-color-light);;
+    height: 0.5rem;
+}
+
+.slider::-moz-range-track {
+  background: var(--text-color-light);
+  height: 0.5rem;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  margin-top: -12px; /* Centers thumb on the track */
+  background-color: #e7e40d;;
+  height: 1rem;
+  width: 1rem;  
+}
+
+.slider::-moz-range-thumb  {
+  border: none; /*Removes extra border that FF applies*/
+  border-radius: 50%; /*Removes default border-radius that FF applies*/
+  background-color: #d00b0b;
+  height: 1rem;
+  width: 1rem;
+}
+
+.saveBtn {
+  margin-top: 0.5rem;
+  background-color: var(--button-color);
+  color: var(--background);
+  border: none;
+  padding: 0.75rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.saveBtn:hover {
+  opacity: 0.9;
 }
