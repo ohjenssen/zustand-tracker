@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import SearchContent from '@/app/search/SearchContent';
 import BackButton from '@/app/components/BackButton/BackButton';
+import Navbar from '../components/Navbar/Navbar';
 
 export default function SearchPage() {
 	return (
@@ -9,6 +10,7 @@ export default function SearchPage() {
 				<SearchContent />
 			</Suspense>
 			<BackButton />
+			<Navbar />
 		</main>
 	);
 }

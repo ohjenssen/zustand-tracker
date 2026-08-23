@@ -1,0 +1,127 @@
+/* Container */
+.fabContainer {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 1002;
+}
+
+/* Hovedknapp */
+.fabMain {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: #fbc02d; /* Gul farge som i skisse */
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+              box-shadow 0.3s ease;
+  z-index: 1003;
+}
+
+.fabMain:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Ikoner */
+.fabIconPlus,
+.fabIconClose {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.fabIconPlus svg,
+.fabIconClose svg {
+  stroke: #121212; /* Mørkt ikon mot gul bakgrunn */
+}
+
+.fabIconPlus {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+.fabIconPlus.active {
+  opacity: 0;
+  transform: rotate(180deg);
+}
+
+.fabIconClose {
+  opacity: 0;
+  transform: rotate(-180deg);
+}
+
+.fabIconClose.active {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+/* Overlay */
+.fabOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.fabOverlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Actions Wrapper */
+.fabActions {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  pointer-events: none;
+}
+
+.fabActions.active {
+  pointer-events: auto;
+}
+
+/* Enkeltknapper */
+.fabAction {
+  position: absolute;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--text-color-light); /* Cyan/grønn farge som i skisse */
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.27),
+              opacity 0.25s ease;
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+.fabAction svg {
+  stroke: #121212;
+}
+
+.fabActions.active .fabAction {
+  opacity: 1;
+}
+
+/* Mobil-tilpasning */
+@media (max-width: 768px) {
+  .fabContainer {
+    bottom: 85px;
+    right: 40px;
+  }
+}

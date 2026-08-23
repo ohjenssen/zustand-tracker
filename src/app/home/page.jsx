@@ -4,9 +4,9 @@ import styles from './home.module.css';
 import { useAuthStore } from '../store/store';
 import CalorieStats from './CalorieStats/CalorieStats';
 import Meals from './Meals/Meals';
-import AddButton from '@/app/components/AddButton/AddButton';
 import DateNavigator from './DateNavigator/DateNavigator';
 import Navbar from '@/app/components/Navbar/Navbar';
+import FloatingActionButton from '@/app/components/FloatingActionButton/FloatingActionButton';
 
 export default function CalorieTrackerHome() {
     const token = useAuthStore((state) => state.token);
@@ -63,7 +63,7 @@ export default function CalorieTrackerHome() {
 
                     <Meals meals={filteredMeals} />
 
-                    <AddButton href={`/add-food/?mealId=new&date=${formattedSelectedDate}`} />
+                    <FloatingActionButton date={formattedSelectedDate}/>
                 </main>
             }
             <Navbar />
