@@ -265,7 +265,7 @@
 .slider::-webkit-slider-thumb { /* Dette er til Iphone */
   -webkit-appearance: none; /* Override default look */
   appearance: none;
-  margin-top: -6px;
+  margin-top: -4px;
   background-color: var(--button-color);
   height: 1rem;
   width: 1rem;  

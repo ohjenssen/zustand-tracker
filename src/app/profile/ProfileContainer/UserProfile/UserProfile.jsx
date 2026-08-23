@@ -9,6 +9,7 @@ import styles from './userProfile.module.css';
 export default function UserProfile({ onEdit = false }) {
   const isLoading = useAuthStore((state) => state.isLoading);
   const user = useAuthStore((state) => state.user);
+  const token = useAuthStore((state) => state.token)
   
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,17 +53,40 @@ export default function UserProfile({ onEdit = false }) {
   const totalDailyCalories = getTotalCalories();
   const estimatedNewCalories = getTotalCalories(protein, carbs, fat);
 
-  // Dummy-funksjon for oppdatering av makronæringsstoffer
-  const handleSaveMacros = (e) => {
+  const handleSaveMacros = async (e) => {
     e.preventDefault();
     const payload = {
         gram_fat_need: fat,
         gram_carbohydrate_need: carbs,
         gram_protein_need: protein
     }
-    console.log('payload: ', payload);
-    console.log(`Ny estimert total: ${estimatedNewCalories} kcal`);
-    
+    console.log('payload: ', payload)
+
+    // updateUser(payload);
+
+            try {
+            const res = await fetch(
+                    "https://foodtracker-api.oskarjenssen.com/api/user",
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify(payload),
+                    },
+            );
+
+            const json = await res.json();
+            console.log('json: ', json);
+        } catch {
+
+        } finally {
+            console.log('payload: ', payload);
+            console.log(`Ny estimert total: ${estimatedNewCalories} kcal`);
+        }
+
     setIsModalOpen(false);
   };
 
