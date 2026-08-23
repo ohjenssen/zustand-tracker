@@ -55,8 +55,12 @@ export default function UserProfile({ onEdit = false }) {
   // Dummy-funksjon for oppdatering av makronæringsstoffer
   const handleSaveMacros = (e) => {
     e.preventDefault();
-    console.log('--- Ny makrofordeling lagret (Dummy) ---');
-    console.log(`Protein: ${protein}g | Karbo: ${carbs}g | Fett: ${fat}g`);
+    const payload = {
+        gram_fat_need: fat,
+        gram_carbohydrate_need: carbs,
+        gram_protein_need: protein
+    }
+    console.log('payload: ', payload);
     console.log(`Ny estimert total: ${estimatedNewCalories} kcal`);
     
     setIsModalOpen(false);
