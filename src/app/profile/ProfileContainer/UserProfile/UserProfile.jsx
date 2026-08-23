@@ -16,6 +16,26 @@ export default function UserProfile({ onEdit = false }) {
   const [carbs, setCarbs] = useState(0);
   const [fat, setFat] = useState(0);
 
+  // Lås scrolling på bakgrunnen når modalen er åpen
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+      // For iOS Safari (forhindrer rubber-banding)
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [isModalOpen]);
+
   // Synkroniser state med user-data når komponenten / user endrer seg
   useEffect(() => {
     if (user) {
@@ -39,7 +59,6 @@ export default function UserProfile({ onEdit = false }) {
     console.log(`Protein: ${protein}g | Karbo: ${carbs}g | Fett: ${fat}g`);
     console.log(`Ny estimert total: ${estimatedNewCalories} kcal`);
     
-    // Her kan du senere legge til API-kall: await updateMacros({ gram_protein_need: protein, ... })
     setIsModalOpen(false);
   };
 
@@ -103,7 +122,11 @@ export default function UserProfile({ onEdit = false }) {
 
           {/* Modal for redigering av makroer */}
           {isModalOpen && (
-            <div className={styles.modalOverlay} onClick={() => setIsModalOpen(false)}>
+            <div 
+              className={styles.modalOverlay} 
+              onClick={() => setIsModalOpen(false)}
+              onTouchMove={(e) => e.stopPropagation()}
+            >
               <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
                 <button
                   className={styles.closeBtn}

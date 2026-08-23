@@ -165,6 +165,10 @@
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
+  
+  /* Hindrer touch-bevegelser og drag på mobil */
+  touch-action: none;
+  overscroll-behavior: contain;
 }
 
 .modalCard {

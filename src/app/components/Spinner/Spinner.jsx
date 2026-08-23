@@ -23,7 +23,7 @@ export default function Spinner({container = false, size = 'md', color, isHiding
                 className={`${styles.spinner} ${sizeClass}`}
                 style={color ? { color } : undefined}
                 role="status"
-                >
+            >
                 <span className={styles.srOnly}>Laster inn...</span>
             </div>
         </span>
