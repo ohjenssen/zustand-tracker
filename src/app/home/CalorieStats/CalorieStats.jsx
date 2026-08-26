@@ -15,7 +15,6 @@ export default function CalorieStats({ eaten }) {
 
     return (
         <section className={styles.section}>
-            <h2 className={styles.title}>Eaten</h2>
             <div className={styles.calorieText}>
                 {eaten} / <span className={styles.targetText}>{dailyCalories ? `${dailyCalories} kcal` : <Spinner size='sm'/>}</span>
             </div>
