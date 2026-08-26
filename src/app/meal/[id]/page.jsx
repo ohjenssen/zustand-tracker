@@ -7,6 +7,7 @@ import MealMacroStats from '@/app/meal/[id]/MealMacroStats/MealMacroStats';
 import { useAuthStore } from '@/app/store/store';
 import AddButton from '@/app/components/AddButton/AddButton';
 import BackButton from '@/app/components/BackButton/BackButton';
+import Navbar from '@/app/components/Navbar/Navbar';
 
 export default function MealOverviewPage() {
     const { id } = useParams();
@@ -46,6 +47,7 @@ export default function MealOverviewPage() {
         }
 
         <BackButton />
+        <Navbar />
     </main>
   );
 }
