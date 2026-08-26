@@ -121,7 +121,7 @@
 /* Mobil-tilpasning */
 @media (max-width: 768px) {
   .fabContainer {
-    bottom: 105px;
+    bottom: 145px;
     right: 40px;
   }
 }
