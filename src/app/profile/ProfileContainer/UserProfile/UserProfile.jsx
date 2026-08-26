@@ -127,12 +127,12 @@ export default function UserProfile({ onEdit = false }) {
               </div>
 
               <div className={styles.labelContainer}>
-                <label className={styles.statsValue}>Carbohydrate</label>
+                <label className={styles.statsValue}>Carbohydrates</label>
                 <label className={styles.statsValue}>{user?.gram_carbohydrate_need}g</label>
               </div>
 
               <div className={styles.labelContainer}>
-                <label className={styles.statsValue}>Protein</label>
+                <label className={styles.statsValue}>Proteins</label>
                 <label className={styles.statsValue}>{user?.gram_protein_need}g</label>
               </div>
             </div>
