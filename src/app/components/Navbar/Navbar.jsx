@@ -6,10 +6,10 @@ export default function Navbar() {
   return (
     <nav className={styles.navbar}>
       <Link href="/home" className={styles.navItem} aria-label="Hjem">
-        <Home size={28} />
+        <Home size={38} />
       </Link>
       <Link href="/profile" className={styles.navItem} aria-label="Profil">
-        <User size={28} />
+        <User size={38} />
       </Link>
     </nav>
   );
