@@ -207,26 +207,69 @@
 .sliderForm {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 3.25rem;
 }
 
 .sliderGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem; /* Litt mer gap siden header nå er en rad */
 }
 
 .sliderHeader {
   display: flex;
   justify-content: space-between;
+  align-items: center; /* Sørger for at label og stepper ligger på linje */
   font-size: 0.95rem;
+}
+
+.macroLabel {
   font-weight: 500;
+}
+
+/* Stepper container i headeren */
+.numberStepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 110px;
+  gap: 0.25rem;
+  padding: 2px 4px;
+  border-radius: 99px;
 }
 
 .sliderValue {
   font-weight: 700;
+  font-size: 1rem;
+  min-width: 35px; /* Forhindrer hopp i layout når tallet endres */
+  text-align: center;
 }
 
+/* Små stepper knapper i header */
+.stepBtn {
+  background: none;
+  background-color: var(--text-color-light);
+  border: none;
+  color:  var(--background);
+  opacity: 0.7;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+  border-radius: 50%;
+}
+
+.stepBtn:hover {
+  opacity: 1;
+}
+
+.stepBtn:active {
+  transform: scale(0.9);
+}
+
+/* Selve slideren ligger nå alene */
 .slider {
   -webkit-appearance: none;
   appearance: none;
@@ -235,6 +278,7 @@
   border-radius: 4px;
   background: var(--text-color-light);
   outline: none;
+  cursor: pointer;
 }
 
 .slider::-webkit-slider-thumb {
@@ -243,40 +287,41 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: var(--button-color); /* Mørkerød knapp fra bildet */
-  cursor: pointer;
+  background: var(--button-color);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
   transition: transform 0.1s ease;
 }
 
 .slider::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
+  transform: scale(1.1);
 }
 
+/* Plattform-spesifikk track styling (forhindrer kutt i thumb) */
 .slider::-webkit-slider-runnable-track {
-    background: var(--text-color-light);;
-    height: 0.5rem;
+    background: transparent;
+    height: 22px; /* Må matche thumb høyde for sentrering */
+    display: flex;
+    align-items: center;
 }
 
+.slider::-webkit-slider-thumb {
+  margin-top: 0; /* Nullstill margin da track høyden nå håndterer sentrering */
+}
+
+/* Firefox */
 .slider::-moz-range-track {
   background: var(--text-color-light);
-  height: 0.5rem;
-}
-
-.slider::-webkit-slider-thumb { /* Dette er til Iphone */
-  -webkit-appearance: none; /* Override default look */
-  appearance: none;
-  margin-top: -4px;
-  background-color: var(--button-color);
-  height: 1rem;
-  width: 1rem;  
+  height: 8px;
+  border-radius: 4px;
 }
 
 .slider::-moz-range-thumb  {
-  border: none; /*Removes extra border that FF applies*/
-  border-radius: 50%; /*Removes default border-radius that FF applies*/
+  border: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
   background-color: var(--button-color);
-  height: 1rem;
-  width: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
 .saveBtn {

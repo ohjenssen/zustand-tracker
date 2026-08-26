@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { UserCircle, Edit2, X, Ellipsis } from 'lucide-react';
+import { UserCircle, Edit2, X, Ellipsis, Plus, Minus } from 'lucide-react';
 import { useAuthStore } from '../../../store/store';
 import Spinner from '@/app/components/Spinner/Spinner';
 import styles from './userProfile.module.css';
@@ -9,7 +9,7 @@ import styles from './userProfile.module.css';
 export default function UserProfile({ onEdit = false }) {
   const isLoading = useAuthStore((state) => state.isLoading);
   const user = useAuthStore((state) => state.user);
-  const token = useAuthStore((state) => state.token)
+  const token = useAuthStore((state) => state.token);
   
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +21,6 @@ export default function UserProfile({ onEdit = false }) {
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = 'hidden';
-      // For iOS Safari (forhindrer rubber-banding)
       document.body.style.position = 'fixed';
       document.body.style.width = '100%';
     } else {
@@ -59,33 +58,24 @@ export default function UserProfile({ onEdit = false }) {
         gram_fat_need: fat,
         gram_carbohydrate_need: carbs,
         gram_protein_need: protein
+    };
+
+    try {
+        await fetch(
+            "https://foodtracker-api.oskarjenssen.com/api/user",
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(payload),
+            },
+        );
+    } catch {
+        console.error("Kunne ikke oppdatere makromål");
     }
-    console.log('payload: ', payload)
-
-    // updateUser(payload);
-
-            try {
-            const res = await fetch(
-                    "https://foodtracker-api.oskarjenssen.com/api/user",
-                    {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Accept: "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                        body: JSON.stringify(payload),
-                    },
-            );
-
-            const json = await res.json();
-            console.log('json: ', json);
-        } catch {
-
-        } finally {
-            console.log('payload: ', payload);
-            console.log(`Ny estimert total: ${estimatedNewCalories} kcal`);
-        }
 
     setIsModalOpen(false);
   };
@@ -168,11 +158,28 @@ export default function UserProfile({ onEdit = false }) {
                 <p className={styles.modalSubtitle}>Estimert: {estimatedNewCalories} kcal</p>
 
                 <form onSubmit={handleSaveMacros} className={styles.sliderForm}>
-                  {/* Protein Slider */}
+                  
+                  {/* Protein Section */}
                   <div className={styles.sliderGroup}>
                     <div className={styles.sliderHeader}>
-                      <span>Protein</span>
-                      <span className={styles.sliderValue}>{protein}g</span>
+                      <span className={styles.macroLabel}>Protein</span>
+                      <div className={styles.numberStepper}>
+                        <button 
+                          type="button"
+                          className={styles.stepBtn}
+                          onClick={() => setProtein(prev => Math.max(0, prev - 1))}
+                        >
+                          <Minus size={14} />
+                        </button>
+                        <span className={styles.sliderValue}>{protein}g</span>
+                        <button 
+                          type="button"
+                          className={styles.stepBtn}
+                          onClick={() => setProtein(prev => prev < 300 ? prev + 1 : prev)}
+                        >
+                          <Plus size={14} />
+                        </button>
+                      </div>
                     </div>
                     <input
                       type="range"
@@ -184,11 +191,27 @@ export default function UserProfile({ onEdit = false }) {
                     />
                   </div>
 
-                  {/* Karbohydrater Slider */}
+                  {/* Karbohydrater Section */}
                   <div className={styles.sliderGroup}>
                     <div className={styles.sliderHeader}>
-                      <span>Karbohydrater</span>
-                      <span className={styles.sliderValue}>{carbs}g</span>
+                      <span className={styles.macroLabel}>Karbohydrater</span>
+                      <div className={styles.numberStepper}>
+                        <button 
+                          type="button"
+                          className={styles.stepBtn}
+                          onClick={() => setCarbs(prev => Math.max(0, prev - 1))}
+                        >
+                          <Minus size={14} />
+                        </button>
+                        <span className={styles.sliderValue}>{carbs}g</span>
+                        <button 
+                          type="button"
+                          className={styles.stepBtn}
+                          onClick={() => setCarbs(prev => prev < 500 ? prev + 1 : prev)}
+                        >
+                          <Plus size={14} />
+                        </button>
+                      </div>
                     </div>
                     <input
                       type="range"
@@ -200,11 +223,27 @@ export default function UserProfile({ onEdit = false }) {
                     />
                   </div>
 
-                  {/* Fett Slider */}
+                  {/* Fett Section */}
                   <div className={styles.sliderGroup}>
                     <div className={styles.sliderHeader}>
-                      <span>Fett</span>
-                      <span className={styles.sliderValue}>{fat}g</span>
+                      <span className={styles.macroLabel}>Fett</span>
+                      <div className={styles.numberStepper}>
+                        <button 
+                          type="button"
+                          className={styles.stepBtn}
+                          onClick={() => setFat(prev => Math.max(0, prev - 1))}
+                        >
+                          <Minus size={14} />
+                        </button>
+                        <span className={styles.sliderValue}>{fat}g</span>
+                        <button 
+                          type="button"
+                          className={styles.stepBtn}
+                          onClick={() => setFat(prev => prev < 200 ? prev + 1 : prev)}
+                        >
+                          <Plus size={14} />
+                        </button>
+                      </div>
                     </div>
                     <input
                       type="range"
