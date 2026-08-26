@@ -13,7 +13,7 @@
 .calorieText {
   font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   color: #ffffff;
 }
 
@@ -29,10 +29,38 @@
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 9999px;
   overflow: hidden;
+  margin-bottom: 1.5rem;
 }
 
 .progressBarFill {
   height: 100%;
-  background-color: var(--button-color); 
+  background-color: var(--button-color, #eab308); 
   transition: width 0.5s ease-in-out;
+}
+
+/* Makro-grid styling */
+.macroContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.macroItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.macroValue {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-color-light);
+  margin-bottom: 0.2rem;
+}
+
+.macroLabel {
+  font-size: 0.85rem;
+  color: var(--text-color-light);
+  opacity: 0.9;
 }

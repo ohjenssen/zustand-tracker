@@ -29,22 +29,33 @@ export default function CalorieTrackerHome() {
     // Filtrer måltidene for den valgte datoen
     const filteredMeals = allMeals.filter((meal) => {
         if (!meal.created_at) return false;
-        // Hent YYYY-MM-DD fra created_at (f.eks. "2026-08-09T09:01:26.000000Z")
         const mealDate = meal.created_at.split('T')[0];
         return mealDate === formattedSelectedDate;
     });
 
-    // Regn ut totalt antall spiste kalorier for den valgte dagen
-    const totalEatenKcal = filteredMeals.reduce((total, meal) => {
+    // Regn ut totalt inntak for kalorier og makroer for den valgte dagen
+    const dailyTotals = filteredMeals.reduce((totals, meal) => {
         const foodComponents = meal.foodComponents || [];
-        const mealKcal = foodComponents.reduce((sum, food) => {
+        
+        foodComponents.forEach((food) => {
             const grams = food.gramsEaten || 0;
             const factor = grams / 100;
-            const kcalPer100 = food.kcal || Math.round((food.protein * 4) + (food.carbs * 4) + (food.fat * 9));
-            return sum + Math.round(kcalPer100 * factor);
-        }, 0);
-        return total + mealKcal;
-    }, 0);
+
+            const protein = (food.protein || 0) * factor;
+            const fat = (food.fat || 0) * factor;
+            const carbs = (food.carbs || 0) * factor;
+
+            const kcalPer100 = food.kcal || ((food.protein * 4) + (food.carbs * 4) + (food.fat * 9));
+            const kcal = kcalPer100 * factor;
+
+            totals.kcal += kcal;
+            totals.protein += protein;
+            totals.fat += fat;
+            totals.carbs += carbs;
+        });
+
+        return totals;
+    }, { kcal: 0, protein: 0, fat: 0, carbs: 0 });
 
     return (
         <>
@@ -59,7 +70,12 @@ export default function CalorieTrackerHome() {
                         setSelectedDate={setSelectedDate} 
                     />
 
-                    <CalorieStats eaten={totalEatenKcal} />
+                    <CalorieStats 
+                        eaten={Math.round(dailyTotals.kcal)} 
+                        proteinEaten={Math.round(dailyTotals.protein)}
+                        fatEaten={Math.round(dailyTotals.fat)}
+                        carbsEaten={Math.round(dailyTotals.carbs)}
+                    />
 
                     <Meals meals={filteredMeals} />
 
