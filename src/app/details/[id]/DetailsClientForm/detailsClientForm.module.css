@@ -3,6 +3,7 @@
   flex-direction: column;
   flex: 1 1 0%;
   width: 100%;
+  touch-action: none;
 }
 
 .title {
@@ -67,7 +68,7 @@
 
 .inputGroup {
   background-color: var(--text-color-light);
-  border-radius: 0.75rem; /* rounded-xl */
+  border-radius: 0.75rem; 
   padding: 1rem;
   display: flex;
   align-items: center;
@@ -90,13 +91,13 @@
 
 .gramUnit {
   font-size: 1.5rem;
-  color: var(--background); /* gray-400 */
+  color: var(--background); 
   font-weight: 500;
 }
 
 .saveButton {
   width: 100%;
-  background-color: #facc15; /* yellow-400 */
+  background-color: var(--button-color);
   color: #003d2b;
   font-weight: 700;
   padding-top: 1rem;
