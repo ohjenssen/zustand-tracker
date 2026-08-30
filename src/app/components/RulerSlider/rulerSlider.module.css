@@ -48,6 +48,7 @@
   align-items: center;
   overflow: hidden;
   cursor: grab;
+  touch-action: none;
 }
 
 .rulerContainer:active {
