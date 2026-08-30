@@ -1,5 +1,6 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import styles from "./rulerSlider.module.css";
 
 export default function RulerSlider({ 
@@ -10,28 +11,24 @@ export default function RulerSlider({
     step = 1, 
     unit = "g" 
 }) {
-    const scrollRef = useRef(null);
-    const isDragging = useRef(false);
-    const startX = useRef(0);
-    const scrollLeft = useRef(0);
-    
-    // Bredde per tick (strek) i piksler
-    const stepWidth = 10; 
+    const containerRef = useRef(null);
+    const stepWidth = 10; // Pikselbredde per tall-steg
     const totalSteps = Math.floor((max - min) / step);
 
-    // Synkroniser scroll-posisjon med "value" prop når komponenten laster eller endres utenfra
-    useEffect(() => {
-        if (scrollRef.current && !isDragging.current) {
-            const currentStep = (value - min) / step;
-            scrollRef.current.scrollLeft = currentStep * stepWidth;
-        }
-    }, [value, min, step]);
+    // Motion value for X-posisjonen til linjalen
+    const x = useMotionValue(0);
 
-    // Håndter scrolling i linjalen
-    const handleScroll = () => {
-        if (!scrollRef.current) return;
-        const currentScroll = scrollRef.current.scrollLeft;
-        const rawStep = currentScroll / stepWidth;
+    // Konverter initial verdi til x-posisjon når komponenten lastes eller oppdateres utenfra
+    useEffect(() => {
+        const currentStep = (value - min) / step;
+        x.set(-currentStep * stepWidth);
+    }, [value, min, step, x]);
+
+    // Oppdaterer verdien mens brukeren drar linjalen
+    const handleDrag = () => {
+        const currentX = x.get();
+        // Beregn nåværende steg basert på negativ offset
+        const rawStep = -currentX / stepWidth;
         const calculatedValue = Math.round(rawStep) * step + min;
         
         const clampedValue = Math.max(min, Math.min(max, calculatedValue));
@@ -40,35 +37,19 @@ export default function RulerSlider({
         }
     };
 
-    // Drag-funksjonalitet for mus (for desktop-testing)
-    const handleMouseDown = (e) => {
-        isDragging.current = true;
-        startX.current = e.pageX - scrollRef.current.offsetLeft;
-        scrollLeft.current = scrollRef.current.scrollLeft;
-    };
-
-    const handleMouseLeaveOrUp = () => {
-        isDragging.current = false;
-    };
-
-    const handleMouseMove = (e) => {
-        if (!isDragging.current) return;
-        e.preventDefault();
-        const x = e.pageX - scrollRef.current.offsetLeft;
-        const walk = (x - startX.current) * 1.5; // Hastighet på drag
-        scrollRef.current.scrollLeft = scrollLeft.current - walk;
-    };
-
     return (
         <div className={styles.wrapper}>
-            {/* Hovedvisning av tall og enhet */}
+            {/* Tall-visning i toppen */}
             <div className={styles.displayContainer}>
                 <input
                     type="number"
                     value={value}
                     onChange={(e) => {
                         const val = Number(e.target.value);
-                        if (!isNaN(val)) onChange(Math.min(max, Math.max(min, val)));
+                        if (!isNaN(val)) {
+                            const clamped = Math.min(max, Math.max(min, val));
+                            onChange(clamped);
+                        }
                     }}
                     className={styles.valueInput}
                 />
@@ -76,23 +57,23 @@ export default function RulerSlider({
             </div>
 
             {/* Linjal-beholder */}
-            <div className={styles.rulerContainer}>
-                {/* Den grønne markøren i midten */}
+            <div className={styles.rulerContainer} ref={containerRef}>
+                {/* Midt-indikator */}
                 <div className={styles.centerIndicator} />
 
-                {/* Scrollefeltet for linjalen */}
-                <div
-                    ref={scrollRef}
-                    className={styles.rulerScroll}
-                    onScroll={handleScroll}
-                    onMouseDown={handleMouseDown}
-                    onMouseLeave={handleMouseLeaveOrUp}
-                    onMouseUp={handleMouseLeaveOrUp}
-                    onMouseMove={handleMouseMove}
+                {/* Draggbar linjal med Framer Motion */}
+                <motion.div
+                    className={styles.ticksTrack}
+                    drag="x"
+                    dragConstraints={{
+                        left: -totalSteps * stepWidth,
+                        right: 0
+                    }}
+                    dragElastic={0.05}
+                    dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
+                    style={{ x }}
+                    onDrag={handleDrag}
                 >
-                    {/* Padding-blokker for at 0 og MAX skal kunne nå midten av skjermen */}
-                    <div className={styles.paddingBlock} />
-
                     <div className={styles.ticksWrapper}>
                         {Array.from({ length: totalSteps + 1 }).map((_, index) => {
                             const currentValue = min + index * step;
@@ -121,9 +102,7 @@ export default function RulerSlider({
                             );
                         })}
                     </div>
-
-                    <div className={styles.paddingBlock} />
-                </div>
+                </motion.div>
             </div>
         </div>
     );

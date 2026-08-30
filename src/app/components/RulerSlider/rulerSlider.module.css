@@ -22,12 +22,11 @@
   outline: none;
   font-size: 3.5rem;
   font-weight: 700;
-  color: #22c55e; /* Grønnfarge som i bildet */
+  color: #22c55e;
   text-align: right;
   width: 160px;
 }
 
-/* Skjul piler på number-input */
 .valueInput::-webkit-outer-spin-button,
 .valueInput::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -48,6 +47,11 @@
   display: flex;
   align-items: center;
   overflow: hidden;
+  cursor: grab;
+}
+
+.rulerContainer:active {
+  cursor: grabbing;
 }
 
 /* Grønn indikator-strek i midten */
@@ -64,25 +68,14 @@
   pointer-events: none;
 }
 
-/* Scroll-området */
-.rulerScroll {
+/* Motion-sporet som dras */
+.ticksTrack {
   display: flex;
   align-items: flex-start;
-  width: 100%;
-  height: 100%;
-  overflow-x: scroll;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-}
-
-.rulerScroll::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
-}
-
-.paddingBlock {
-  min-width: 50vw; /* Gjør at 0g og max-g kan treffe midten */
-  flex-shrink: 0;
+  position: absolute;
+  left: 50%; /* Sentrerer sporet slik at x=0 treffer midten */
+  top: 10px;
+  touch-action: pan-y;
 }
 
 .ticksWrapper {
