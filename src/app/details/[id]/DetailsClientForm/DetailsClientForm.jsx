@@ -14,27 +14,36 @@ export default function DetailsClientForm({ id }) {
     // Grams er nå et tall (standard 100)
     const [grams, setGrams] = useState(100);
 
-    const foodProducts = useAuthStore((state) => state.foodProducts);
-    const getFoodProducts = useAuthStore((state) => state.getFoodProducts);
+    const token = useAuthStore((state) => state.token);
+    const [food, setFood] = useState(null);
+    const [notFound, setNotFound] = useState(false);
     const createNewMeal = useAuthStore((state) => state.createNewMeal);
     const updateMeal = useAuthStore((state) => state.updateMeal);
     const getSingleMeal = useAuthStore((state) => state.getSingleMeal);
     const getMeals = useAuthStore((state) => state.getMeals);
 
+    // Hent akkurat dette produktet ferskt fra API-et (ingen gammel cache)
     useEffect(() => {
-        if (!foodProducts) {
-            getFoodProducts();
-        }
-    }, [foodProducts, getFoodProducts]);
+        const t = token || localStorage.getItem('token');
+        if (!t) return;
 
-    if (!foodProducts) {
-        return <div className={styles.notFound}>Henter matvare...</div>;
+        fetch(`https://foodtracker-api.oskarjenssen.com/api/food-products/${id}`, {
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${t}`,
+            },
+        })
+            .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+            .then(setFood)
+            .catch(() => setNotFound(true));
+    }, [id, token]);
+
+    if (notFound) {
+        return <div className={styles.notFound}>Fant ikke matproduktet.</div>;
     }
 
-    const food = foodProducts.find((f) => String(f.id) === String(id));
-
     if (!food) {
-        return <div className={styles.notFound}>Fant ikke matproduktet.</div>;
+        return <div className={styles.notFound}>Henter matvare...</div>;
     }
 
     const numericGrams = Number(grams) || 0;

@@ -32,7 +32,7 @@ function ScanPageContent() {
 
       const json = await res.json();
       if (json.length === 0) {
-        router.push(`/add-product?barcode=${barcode}`);
+        router.push(`/add-product?barcode=${barcode}&mealId=${mealId}&date=${dateParam}`);
       } else if (json.length > 0) {
         router.push(`/details/${json[0].id}?mealId=${mealId}&date=${dateParam}`);
       }

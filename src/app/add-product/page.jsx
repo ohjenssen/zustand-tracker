@@ -11,6 +11,8 @@ function AddProductContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const barcodeParam = searchParams.get("barcode") || "";
+	const mealIdParam = searchParams.get("mealId");
+	const dateParam = searchParams.get("date");
 	const token = useAuthStore((state) => state.token);
 
 	const [formData, setFormData] = useState({
@@ -65,7 +67,11 @@ function AddProductContent() {
 			console.log("Respons fra server:", newProduct);
 
 			if (res.ok) {
-				router.push(`/search`);
+				// Send brukeren rett videre til gram-siden for det nye produktet
+				const params = new URLSearchParams();
+				if (mealIdParam && mealIdParam !== "null") params.set("mealId", mealIdParam);
+				if (dateParam && dateParam !== "null") params.set("date", dateParam);
+				router.push(`/details/${newProduct.id}?${params.toString()}`);
 			} else {
 				alert(
 					"Kunne ikke lagre matvaren. Sjekk konsollen for valideringsfeil.",
