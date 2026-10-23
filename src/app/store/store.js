@@ -7,6 +7,7 @@ export const useAuthStore = create((set, get) => ({
     meals: null,
     foodProducts: null,
     foodProductsByName: null,
+    savedMeals: null,
 
     setUser: (user) => set({ user }),
     setAuth: (token) => set({ token }),
@@ -30,7 +31,7 @@ export const useAuthStore = create((set, get) => ({
         }
 
         localStorage.removeItem('token');
-        set({ user: null, token: null, meals: null, isLoading: false });
+        set({ user: null, token: null, meals: null, savedMeals: null, isLoading: false });
     },
 
     setToken: (token) => {
@@ -244,6 +245,107 @@ export const useAuthStore = create((set, get) => ({
             }
         } catch(error) { 
             console.error('error')
+        }
+    },
+
+    // ---------- Lagrede måltider ----------
+
+    getSavedMeals: async () => {
+        const token = get().token || localStorage.getItem('token');
+        if (!token) return;
+
+        try {
+            const response = await fetch('https://foodtracker-api.oskarjenssen.com/api/saved-meals', {
+                headers: {
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+                set({ savedMeals: json.data ? json.data : json });
+            }
+        } catch (error) {
+            console.error('Feil ved henting av lagrede måltider:', error);
+        }
+    },
+
+    // products: [{ id, grams }]
+    createSavedMeal: async (name, products) => {
+        const token = get().token || localStorage.getItem('token');
+        if (!token) return false;
+
+        try {
+            const response = await fetch('https://foodtracker-api.oskarjenssen.com/api/saved-meals', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ name, products })
+            });
+
+            if (response.ok) {
+                get().getSavedMeals();
+                return true;
+            }
+            console.error('Kunne ikke lagre måltid:', await response.json());
+            return false;
+        } catch (error) {
+            console.error('Feil ved lagring av måltid:', error);
+            return false;
+        }
+    },
+
+    // Legger et lagret måltid inn i dagboken. Returnerer id-en til det nye måltidet.
+    logSavedMeal: async (savedMealId, date) => {
+        const token = get().token || localStorage.getItem('token');
+        if (!token) return null;
+
+        try {
+            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/saved-meals/${savedMealId}/log`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(date ? { date } : {})
+            });
+
+            if (!response.ok) return null;
+
+            const json = await response.json();
+            await get().getMeals();
+            return json.data ? json.data.id : json.id;
+        } catch (error) {
+            console.error('Feil ved logging av lagret måltid:', error);
+            return null;
+        }
+    },
+
+    deleteSavedMeal: async (savedMealId) => {
+        const token = get().token || localStorage.getItem('token');
+        if (!token) return;
+
+        // Fjern kortet med en gang, så føles det raskt
+        set({ savedMeals: (get().savedMeals || []).filter((m) => m.id !== savedMealId) });
+
+        try {
+            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/saved-meals/${savedMealId}`, {
+                method: "DELETE",
+                headers: {
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) get().getSavedMeals();
+        } catch (error) {
+            console.error('Feil ved sletting av lagret måltid:', error);
+            get().getSavedMeals();
         }
     }
 }));

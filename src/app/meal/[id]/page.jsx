@@ -8,6 +8,7 @@ import { useAuthStore } from '@/app/store/store';
 import AddButton from '@/app/components/AddButton/AddButton';
 import BackButton from '@/app/components/BackButton/BackButton';
 import Navbar from '@/app/components/Navbar/Navbar';
+import SaveMealForm from '@/app/meal/[id]/SaveMealForm/SaveMealForm';
 
 export default function MealOverviewPage() {
     const { id } = useParams();
@@ -42,6 +43,7 @@ export default function MealOverviewPage() {
                         <FoodComponentCard key={food.id} food={food} mealId={currentMeal.id}/>
                     ))}    
                     <AddButton href={`/add-food?mealId=${currentMeal.id}`}/>
+                    <SaveMealForm foodComponents={foodComponents} />
                 </section>
             </>
         }

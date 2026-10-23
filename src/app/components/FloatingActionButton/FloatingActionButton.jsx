@@ -29,7 +29,7 @@ export default function FloatingActionButton({date}) {
             id: 'savedMeal',
             label: 'Lagrede måltider',
             icon: <CookingPot />,
-            href: '/profile',
+            href: `/saved-meals?date=${date}`,
         },
     ];
 
