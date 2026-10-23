@@ -19,11 +19,24 @@ function AddProductContent() {
 		name: "",
 		variant: "",
 		brand: "",
-		proteins: 0,
-		fat: 0,
-		carbohydrates: 0,
+		proteins: "",
+		fat: "",
+		carbohydrates: "",
 		barcode: barcodeParam,
 	});
+
+	// Kun for testing: fyller skjemaet med et oppdiktet produkt
+	const fillTestProduct = () => {
+		setFormData((prev) => ({
+			...prev,
+			name: "Nudler",
+			variant: "Regnbue-enhjørning",
+			brand: "Testmerke",
+			proteins: "9.5",
+			fat: "14",
+			carbohydrates: "62",
+		}));
+	};
 
 	// Sørg for at barcode oppdateres i formData dersom den finnes i URL
 	useEffect(() => {
@@ -35,19 +48,23 @@ function AddProductContent() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const handleChange = (e) => {
-		const { name, value, type } = e.target;
-		setFormData((prev) => ({
-			...prev,
-			[name]:
-				type === "number" ? (value === "" ? 0 : parseFloat(value)) : value,
-		}));
+		const { name, value } = e.target;
+		// Tallfeltene lagres som tekst mens man skriver, og gjøres om til tall ved lagring
+		setFormData((prev) => ({ ...prev, [name]: value }));
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsSubmitting(true);
 
-		console.log("Data som sendes:", JSON.stringify(formData));
+		const payload = {
+			...formData,
+			proteins: parseFloat(formData.proteins) || 0,
+			fat: parseFloat(formData.fat) || 0,
+			carbohydrates: parseFloat(formData.carbohydrates) || 0,
+		};
+
+		console.log("Data som sendes:", JSON.stringify(payload));
 
 		try {
 			const res = await fetch(
@@ -59,7 +76,7 @@ function AddProductContent() {
 						Accept: "application/json",
 						Authorization: `Bearer ${token}`,
 					},
-					body: JSON.stringify(formData),
+					body: JSON.stringify(payload),
 				},
 			);
 
@@ -94,6 +111,16 @@ function AddProductContent() {
 					<label>{formData.barcode}</label>
 				</div>
 			</header>
+
+			{process.env.NODE_ENV !== "production" && (
+				<button
+					type="button"
+					onClick={fillTestProduct}
+					className={styles.testFillButton}
+				>
+					Fyll inn testprodukt
+				</button>
+			)}
 
 			<form onSubmit={handleSubmit} className={styles.form}>
 				<div className={styles.textInputsGroup}>
@@ -157,6 +184,7 @@ function AddProductContent() {
 							type="number"
 							id="fat"
 							name="fat"
+							value={formData.fat}
 							min="0"
 							step="0.1"
 							onChange={handleChange}
@@ -174,6 +202,7 @@ function AddProductContent() {
 							type="number"
 							id="carbohydrates"
 							name="carbohydrates"
+							value={formData.carbohydrates}
 							min="0"
 							step="0.1"
 							onChange={handleChange}
@@ -191,6 +220,7 @@ function AddProductContent() {
 							type="number"
 							id="proteins"
 							name="proteins"
+							value={formData.proteins}
 							min="0"
 							step="0.1"
 							onChange={handleChange}
