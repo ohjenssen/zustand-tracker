@@ -110,7 +110,7 @@ function AddProductContent() {
 							onChange={handleChange}
 							className={styles.underlineInput}
 							required
-							placeholder=""
+							placeholder="f.eks Nudler"
 						/>
 					</div>
 
@@ -125,7 +125,7 @@ function AddProductContent() {
 							value={formData.variant}
 							onChange={handleChange}
 							className={styles.underlineInput}
-							placeholder=""
+							placeholder="f.eks Kylling"
 							required
 						/>
 					</div>
@@ -141,7 +141,7 @@ function AddProductContent() {
 							value={formData.brand}
 							onChange={handleChange}
 							className={styles.underlineInput}
-							placeholder=""
+							placeholder="f.eks Rema 1000"
 							required
 						/>
 					</div>
@@ -161,7 +161,7 @@ function AddProductContent() {
 							step="0.1"
 							onChange={handleChange}
 							className={styles.nutritionInput}
-							placeholder=""
+							placeholder="f.eks  20"
 							required
 						/>
 					</div>
@@ -178,7 +178,7 @@ function AddProductContent() {
 							step="0.1"
 							onChange={handleChange}
 							className={styles.nutritionInput}
-							placeholder=""
+							placeholder="f.eks 55"
 							required
 						/>
 					</div>
@@ -195,7 +195,7 @@ function AddProductContent() {
 							step="0.1"
 							onChange={handleChange}
 							className={styles.nutritionInput}
-							placeholder=""
+							placeholder="f.eks 13"
 							required
 						/>
 					</div>
