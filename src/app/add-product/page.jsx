@@ -112,6 +112,7 @@ function AddProductContent() {
 				</div>
 			</header>
 
+			{process.env.NODE_ENV !== "production" && (
 				<button
 					type="button"
 					onClick={fillTestProduct}
@@ -119,8 +120,7 @@ function AddProductContent() {
 					>
 					Fyll inn testprodukt
 				</button>
-			{/* {process.env.NODE_ENV !== "production" && (
-			)} */}
+			)}
 
 			<form onSubmit={handleSubmit} className={styles.form}>
 				<div className={styles.textInputsGroup}>
