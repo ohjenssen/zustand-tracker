@@ -5,34 +5,41 @@ import Link from 'next/link';
 import { Plus, X, Scan, Search, CookingPot} from 'lucide-react';
 import styles from './floatingActionButton.module.css';
 
-export default function FloatingActionButton({date}) {
+// mealId: legg til i et eksisterende måltid. Uten mealId lages et nytt måltid på valgt dato.
+export default function FloatingActionButton({ date, mealId }) {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleFab = () => setIsOpen((prev) => !prev);
     const closeFab = () => setIsOpen(false);
 
-    // Definerer
+    const params = new URLSearchParams({ mealId: mealId ?? 'new' });
+    if (date) params.set('date', date);
+
     const actions = [
         {
             id: 'scan',
             label: 'Skann',
             icon: <Scan size={20} />,
-            href: `/scan?mealId=new&date=${date}`,
+            href: `/scan?${params.toString()}`,
         },
         {
             id: 'search',
             label: 'Søk etter matprodukt',
             icon: <Search  />,
-            href: `/search?mealId=new&date=${date}`,
+            href: `/search?${params.toString()}`,
         },
         {
             id: 'savedMeal',
             label: 'Lagrede måltider',
             icon: <CookingPot />,
             href: `/saved-meals?date=${date}`,
+            // Et lagret måltid blir alltid et nytt måltid, så det gir bare mening uten mealId
+            hidden: Boolean(mealId),
         },
     ];
 
+  // Plassene i buen beregnes ut fra alle knappene, også skjulte,
+  // slik at hver knapp alltid ligger på samme sted
   const totalActions = actions.length;
 
   // Beregn dynamisk størrelse og avstand basert på antall knapper
@@ -51,6 +58,8 @@ export default function FloatingActionButton({date}) {
             {/* Action Buttons */}
             <div className={`${styles.fabActions} ${isOpen ? styles.active : ''}`}>
                 {actions.map((action, index) => {
+                    if (action.hidden) return null;
+
                     // Beregn vinkel for hver knapp i radiane
                     const angleDeg =
                         totalActions === 1
