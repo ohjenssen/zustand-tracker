@@ -13,16 +13,32 @@ export default function DetailsClientForm({ id }) {
     const mealId = searchParams.get('mealId');
     const dateParam = searchParams.get('date');
     
-    // Grams er nå et tall (standard 100)
-    const [grams, setGrams] = useState(100);
+    // null betyr at brukeren ikke har endret noe ennå
+    const [grams, setGrams] = useState(null);
 
     const token = useAuthStore((state) => state.token);
+    const meals = useAuthStore((state) => state.meals);
     const [food, setFood] = useState(null);
     const [notFound, setNotFound] = useState(false);
     const createNewMeal = useAuthStore((state) => state.createNewMeal);
     const updateMeal = useAuthStore((state) => state.updateMeal);
     const getSingleMeal = useAuthStore((state) => state.getSingleMeal);
     const getMeals = useAuthStore((state) => state.getMeals);
+
+    // Ligger produktet allerede i måltidet, starter linjalen på gramverdien som er lagret
+    const isExistingMeal = mealId && mealId !== 'new' && mealId !== 'null';
+    const existingGrams = isExistingMeal
+        ? meals
+            ?.find((m) => m.id === parseInt(mealId))
+            ?.foodComponents?.find((f) => f.id === parseInt(id))
+            ?.gramsEaten
+        : undefined;
+    const selectedGrams = grams ?? existingGrams ?? 100;
+
+    // Måltidene finnes ikke i storen hvis siden lastes direkte, f.eks. ved reload
+    useEffect(() => {
+        if (isExistingMeal && !meals) getMeals();
+    }, [isExistingMeal, meals, getMeals]);
 
     // Hent akkurat dette produktet ferskt fra API-et (ingen gammel cache)
     useEffect(() => {
@@ -48,7 +64,7 @@ export default function DetailsClientForm({ id }) {
         return <div className={styles.notFound}>Henter matvare...</div>;
     }
 
-    const numericGrams = Number(grams) || 0;
+    const numericGrams = Number(selectedGrams) || 0;
     const factor = numericGrams / 100;
 
     const protein = parseFloat(food.proteins || 0);
@@ -62,7 +78,7 @@ export default function DetailsClientForm({ id }) {
         e.preventDefault();
 
         const numericId = parseInt(id);
-        const finalGrams = parseInt(grams) || 0;
+        const finalGrams = parseInt(selectedGrams) || 0;
 
         if (mealId === 'new') {
             const foodItemWithGrams = { 
@@ -128,7 +144,7 @@ export default function DetailsClientForm({ id }) {
             {/* Linjal-slideren er plassert her */}
             <form onSubmit={handleSave} className={styles.actionsContainer}>
                 <RulerSlider 
-                    value={grams} 
+                    value={selectedGrams} 
                     onChange={setGrams} 
                     min={0} 
                     max={1000} 
