@@ -5,7 +5,7 @@
   background-color: var(--background);
   color: var(--text-color-light);
   padding: 1.5rem;
-  padding-bottom: 8rem;
+  padding-bottom: 14rem; /* Plass til FloatingActionButton over navbaren */
   display: flex;
   flex-direction: column;
   align-items: center;
