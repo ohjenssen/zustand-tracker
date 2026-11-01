@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useEffect } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion, useMotionValue, useMotionValueEvent } from "framer-motion";
 import styles from "./rulerSlider.module.css";
 
 export default function RulerSlider({ 
@@ -18,24 +18,31 @@ export default function RulerSlider({
     // Motion value for X-posisjonen til linjalen
     const x = useMotionValue(0);
 
-    // Konverter initial verdi til x-posisjon når komponenten lastes eller oppdateres utenfra
+    // Siste verdi linjalen selv sendte ut. Brukes for å skille egne endringer
+    // fra endringer utenfra (f.eks. at brukeren skriver i tallfeltet).
+    const lastEmittedValue = useRef(null);
+
+    // Flytt linjalen når verdien endres utenfra (og ved første lasting)
     useEffect(() => {
+        if (value === lastEmittedValue.current) return;
+        x.stop(); // Avbryt eventuell glide-animasjon
         const currentStep = (value - min) / step;
         x.set(-currentStep * stepWidth);
     }, [value, min, step, x]);
 
-    // Oppdaterer verdien mens brukeren drar linjalen
-    const handleDrag = () => {
-        const currentX = x.get();
+    // Lytter på selve posisjonen i stedet for onDrag, slik at verdien
+    // også oppdateres mens linjalen glir videre etter at man har sluppet
+    useMotionValueEvent(x, "change", (currentX) => {
         // Beregn nåværende steg basert på negativ offset
         const rawStep = -currentX / stepWidth;
         const calculatedValue = Math.round(rawStep) * step + min;
-        
+
         const clampedValue = Math.max(min, Math.min(max, calculatedValue));
         if (clampedValue !== value) {
+            lastEmittedValue.current = clampedValue;
             onChange(clampedValue);
         }
-    };
+    });
 
     return (
         <div className={styles.wrapper}>
@@ -48,6 +55,7 @@ export default function RulerSlider({
                         const val = Number(e.target.value);
                         if (!isNaN(val)) {
                             const clamped = Math.min(max, Math.max(min, val));
+                            lastEmittedValue.current = null; // Skrevet inn manuelt: linjalen skal følge etter
                             onChange(clamped);
                         }
                     }}
@@ -70,9 +78,13 @@ export default function RulerSlider({
                         right: 0
                     }}
                     dragElastic={0.05}
-                    dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
+                    dragTransition={{
+                        bounceStiffness: 300,
+                        bounceDamping: 30,
+                        // Glir alltid til nærmeste strek, så tallet og streken under indikatoren stemmer
+                        modifyTarget: (target) => Math.round(target / stepWidth) * stepWidth,
+                    }}
                     style={{ x }}
-                    onDrag={handleDrag}
                 >
                     <div className={styles.ticksWrapper}>
                         {Array.from({ length: totalSteps + 1 }).map((_, index) => {
