@@ -9,7 +9,7 @@ import styles from './userProfile.module.css';
 export default function UserProfile({ onEdit = false }) {
   const isLoading = useAuthStore((state) => state.isLoading);
   const user = useAuthStore((state) => state.user);
-  const token = useAuthStore((state) => state.token);
+  const updateUser = useAuthStore((state) => state.updateUser);
   
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -60,20 +60,9 @@ export default function UserProfile({ onEdit = false }) {
         gram_protein_need: protein
     };
 
-    try {
-        await fetch(
-            "https://foodtracker-api.oskarjenssen.com/api/user",
-            {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(payload),
-            },
-        );
-    } catch {
+    // updateUser oppdaterer også brukeren i storen, så tallene på siden endres med en gang
+    const { ok } = await updateUser(payload);
+    if (!ok) {
         console.error("Kunne ikke oppdatere makromål");
     }
 

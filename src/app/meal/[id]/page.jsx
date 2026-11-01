@@ -9,6 +9,7 @@ import AddButton from '@/app/components/AddButton/AddButton';
 import BackButton from '@/app/components/BackButton/BackButton';
 import Navbar from '@/app/components/Navbar/Navbar';
 import SaveMealForm from '@/app/meal/[id]/SaveMealForm/SaveMealForm';
+import { getMealTotals } from '@/app/utils/mealTotals';
 
 export default function MealOverviewPage() {
     const { id } = useParams();
@@ -18,15 +19,7 @@ export default function MealOverviewPage() {
 
     const foodComponents = currentMeal?.foodComponents || [];
 
-    const totals = foodComponents.reduce((acc, food) => {
-        const factor = (food.gramsEaten || 0) / 100;
-        return {
-            kcal: acc.kcal + Math.round((food.kcal || 0) * factor),
-            protein: acc.protein + parseFloat(((food.protein || 0) * factor).toFixed(1)),
-            fat: acc.fat + parseFloat(((food.fat || 0) * factor).toFixed(1)),
-            carbs: acc.carbs + parseFloat(((food.carbs || 0) * factor).toFixed(1)),
-        };
-    }, { kcal: 0, protein: 0, fat: 0, carbs: 0 });
+    const totals = getMealTotals(foodComponents);
 
   return (
     <main className={styles.main}>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import styles from './register.module.css';
 import BackButton from '../components/BackButton/BackButton';
 import { useAuthStore } from '../store/store';
+import { API_URL } from '@/app/utils/api';
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -18,11 +19,11 @@ export default function RegisterPage() {
     const [total_calories_consumed, setTotalCaloriesConsumed] = useState('0');
 
     const setUser = useAuthStore((state) => state.setUser);
-    const setAuth = useAuthStore((state) => state.setAuth);
+    const setToken = useAuthStore((state) => state.setToken);
 
     const handleRegister = async (formData) => {
         try {
-            const res = await fetch('https://foodtracker-api.oskarjenssen.com/api/register', {
+            const res = await fetch(`${API_URL}/register`, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -34,7 +35,8 @@ export default function RegisterPage() {
 
             if (res.ok) {
                 setUser(data.user);
-                setAuth(data.access_token);
+                // setToken lagrer også i localStorage, så innloggingen overlever reload
+                setToken(data.access_token);
                 router.push('/home');
             } else {
                 console.error('Feil ved registrering:', data);

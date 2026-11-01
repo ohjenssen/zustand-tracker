@@ -4,6 +4,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/app/store/store';
 import RulerSlider from '@/app/components/RulerSlider/RulerSlider'; // Importer komponenten
 import styles from './detailsClientForm.module.css';
+import { API_URL } from '@/app/utils/api';
+import { dateToTimestamp } from '@/app/utils/dates';
 
 export default function DetailsClientForm({ id }) {
     const router = useRouter();
@@ -27,7 +29,7 @@ export default function DetailsClientForm({ id }) {
         const t = token || localStorage.getItem('token');
         if (!t) return;
 
-        fetch(`https://foodtracker-api.oskarjenssen.com/api/food-products/${id}`, {
+        fetch(`${API_URL}/food-products/${id}`, {
             headers: {
                 Accept: 'application/json',
                 Authorization: `Bearer ${t}`,
@@ -70,7 +72,7 @@ export default function DetailsClientForm({ id }) {
                         grams: finalGrams
                     }
                 ],
-                ...(dateParam && { "date": dateParam })
+                ...(dateToTimestamp(dateParam) && { "date": dateToTimestamp(dateParam) })
             };
 
             const newMeal = await createNewMeal(foodItemWithGrams);

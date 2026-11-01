@@ -7,7 +7,10 @@ export default function SearchItem({ mealId, food }) {
   const searchParams = useSearchParams();
   const dateParam = searchParams.get('date');
 
-  const href = mealId ? `/details/${food.id}?mealId=${mealId}&date=${dateParam}` : `/details/${food.id}&date=${dateParam}`;
+  const params = new URLSearchParams();
+  if (mealId) params.set('mealId', mealId);
+  if (dateParam) params.set('date', dateParam);
+  const href = `/details/${food.id}?${params.toString()}`;
 
   return (
     <Link href={href} className={styles.itemLink}>

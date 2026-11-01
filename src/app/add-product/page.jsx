@@ -6,6 +6,7 @@ import { useAuthStore } from "../store/store";
 import BackButton from "../components/BackButton/BackButton";
 import { ScanBarcode } from "lucide-react";
 import Spinner from "../components/Spinner/Spinner";
+import { API_URL } from "@/app/utils/api";
 
 function AddProductContent() {
 	const router = useRouter();
@@ -68,7 +69,7 @@ function AddProductContent() {
 
 		try {
 			const res = await fetch(
-				"https://foodtracker-api.oskarjenssen.com/api/food-product",
+				`${API_URL}/food-product`,
 				{
 					method: "POST",
 					headers: {

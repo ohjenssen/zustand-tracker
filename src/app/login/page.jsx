@@ -6,6 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import styles from './login.module.css';
 import { useAuthStore } from '../store/store';
 import BackButton from '@/app/components/BackButton/BackButton';
+import { API_URL } from '@/app/utils/api';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -15,14 +16,15 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
 
     const setUser = useAuthStore((state) => state.setUser);
-    const setAuth = useAuthStore((state) => state.setAuth);
+    const setToken = useAuthStore((state) => state.setToken);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError(null);
 
         try {
-            const response = await fetch('https://foodtracker-api.oskarjenssen.com/api/login', {
+            const response = await fetch(`${API_URL}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -42,15 +44,13 @@ export default function LoginPage() {
 
             if (json.access_token) {
                     setUser(json.user);
-                    setAuth(json.access_token);
-
-                    localStorage.setItem('token', json.access_token);
-                    return router.replace('/home'); 
+                    setToken(json.access_token);
+                    return router.replace('/home');
             }
         } catch (error) {
-            setError(error);
+            // Lagre kun meldingen: et Error-objekt kan ikke rendres i JSX
+            setError(error.message);
             console.error('Login error:', error);
-            throw error; 
         } finally {
             setLoading(false);
         }

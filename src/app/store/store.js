@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { API_URL } from '@/app/utils/api';
 
 export const useAuthStore = create((set, get) => ({
     user: null,
@@ -10,14 +11,13 @@ export const useAuthStore = create((set, get) => ({
     savedMeals: null,
 
     setUser: (user) => set({ user }),
-    setAuth: (token) => set({ token }),
 
     logout: async () => {
         const token = get().token || localStorage.getItem('token');
 
         if (token) {
             try {
-                await fetch('https://foodtracker-api.oskarjenssen.com/api/logout', {
+                await fetch(`${API_URL}/logout`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -55,7 +55,7 @@ export const useAuthStore = create((set, get) => ({
 
         if (token) {
             try {
-                const res = await fetch('https://foodtracker-api.oskarjenssen.com/api/user', {
+                const res = await fetch(`${API_URL}/user`, {
                     headers: {
                         'Accept': 'application/json',
                         'Authorization': `Bearer ${token}`
@@ -82,13 +82,40 @@ export const useAuthStore = create((set, get) => ({
         }
     },
 
+    // Oppdaterer en eller flere profilfelt. Returnerer { ok, errors }.
+    updateUser: async (fields) => {
+        const token = get().token || localStorage.getItem('token');
+        if (!token) return { ok: false, errors: null };
+
+        try {
+            const response = await fetch(`${API_URL}/user`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(fields)
+            });
+            const json = await response.json();
+
+            if (!response.ok) return { ok: false, errors: json.errors || null };
+
+            set({ user: json.user });
+            return { ok: true, errors: null };
+        } catch (error) {
+            console.error('Feil ved oppdatering av bruker:', error);
+            return { ok: false, errors: null };
+        }
+    },
+
     getMeals: async () => {
         const token = get().token || localStorage.getItem('token');
 
         if (!token) return;
 
         try {
-            const response = await fetch('https://foodtracker-api.oskarjenssen.com/api/meals', {
+            const response = await fetch(`${API_URL}/meals`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -113,7 +140,7 @@ export const useAuthStore = create((set, get) => ({
         if (!token) return;
 
         try {
-            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/meals/${id}`, {
+            const response = await fetch(`${API_URL}/meals/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -135,7 +162,7 @@ export const useAuthStore = create((set, get) => ({
         if(!token) return;
 
         try {
-            const response = await fetch('https://foodtracker-api.oskarjenssen.com/api/food-products', {
+            const response = await fetch(`${API_URL}/food-products`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -160,7 +187,7 @@ export const useAuthStore = create((set, get) => ({
         if(!token) return;
 
         try {
-            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/food-products?name=${searchQuery}`, {
+            const response = await fetch(`${API_URL}/food-products?name=${encodeURIComponent(searchQuery)}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -185,7 +212,7 @@ export const useAuthStore = create((set, get) => ({
         if(!token) return;
 
         try {
-            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/meals`, {
+            const response = await fetch(`${API_URL}/meals`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -208,7 +235,7 @@ export const useAuthStore = create((set, get) => ({
         if(!token) return;
         
         try {
-            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/meals/${mealId}`, {
+            const response = await fetch(`${API_URL}/meals/${mealId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -231,7 +258,7 @@ export const useAuthStore = create((set, get) => ({
         if(!token) return;
 
         try {
-            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/meals/${mealId}`, { 
+            const response = await fetch(`${API_URL}/meals/${mealId}`, { 
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -255,7 +282,7 @@ export const useAuthStore = create((set, get) => ({
         if (!token) return;
 
         try {
-            const response = await fetch('https://foodtracker-api.oskarjenssen.com/api/saved-meals', {
+            const response = await fetch(`${API_URL}/saved-meals`, {
                 headers: {
                     "Accept": "application/json",
                     'Authorization': `Bearer ${token}`
@@ -277,7 +304,7 @@ export const useAuthStore = create((set, get) => ({
         if (!token) return false;
 
         try {
-            const response = await fetch('https://foodtracker-api.oskarjenssen.com/api/saved-meals', {
+            const response = await fetch(`${API_URL}/saved-meals`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -305,7 +332,7 @@ export const useAuthStore = create((set, get) => ({
         if (!token) return null;
 
         try {
-            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/saved-meals/${savedMealId}/log`, {
+            const response = await fetch(`${API_URL}/saved-meals/${savedMealId}/log`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -334,7 +361,7 @@ export const useAuthStore = create((set, get) => ({
         set({ savedMeals: (get().savedMeals || []).filter((m) => m.id !== savedMealId) });
 
         try {
-            const response = await fetch(`https://foodtracker-api.oskarjenssen.com/api/saved-meals/${savedMealId}`, {
+            const response = await fetch(`${API_URL}/saved-meals/${savedMealId}`, {
                 method: "DELETE",
                 headers: {
                     "Accept": "application/json",

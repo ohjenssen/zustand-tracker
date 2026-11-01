@@ -1,27 +1,34 @@
+import { useState } from 'react';
 import { useAuthStore } from '@/app/store/store';
-import Spinner from '@/app/components/Spinner/Spinner';
 import styles from './userSettings.module.css';
 import LogoutButton from '@/app/components/LogoutButton/LogoutButton';
 
 export default function UserSettings({ onClose }) {
 	const user = useAuthStore((state) => state.user);
-	const loading = useAuthStore((state) => state.loading);
+	const updateUser = useAuthStore((state) => state.updateUser);
+	const [isSaving, setIsSaving] = useState(false);
+	const [error, setError] = useState(null);
 
-	const handleSave = (e) => {
+	const handleSave = async (e) => {
 		e.preventDefault();
-		const form = e.currentTarget;
-		const formData = new FormData(form);
+		const formData = new FormData(e.currentTarget);
 		const formJson = Object.fromEntries(formData.entries());
-		updateUserInDB(formJson);
 
-		onClose();
+		setIsSaving(true);
+		setError(null);
+		const { ok, errors } = await updateUser(formJson);
+		setIsSaving(false);
+
+		if (ok) {
+			onClose();
+		} else {
+			// Viser første valideringsfeil fra API-et, f.eks. at e-posten er i bruk
+			setError(errors ? Object.values(errors)[0][0] : 'Kunne ikke lagre. Prøv igjen.');
+		}
 	};
 
 	return (
 		<>
-			{ loading ? (
-				<Spinner container={true}/>
-			) : (
 				<div className={styles.overlay} onClick={onClose}>
 					<form
 						onSubmit={handleSave}
@@ -38,14 +45,17 @@ export default function UserSettings({ onClose }) {
 							<input type="email" name="email" defaultValue={user.email} className={styles.input} />
 						</div>
 
-						<button type="submit" className={styles.saveButton}>Save Changes</button>
+						{error && <p className={styles.error}>{error}</p>}
+
+						<button type="submit" className={styles.saveButton} disabled={isSaving}>
+							{isSaving ? 'Saving...' : 'Save Changes'}
+						</button>
 
 						<div className={styles.logoutContainer}>
 							<LogoutButton />
 						</div>
 					</form>
 				</div>
-			)}
 		</>
 	);
 }

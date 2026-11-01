@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Trash2, CookingPot, Plus } from 'lucide-react';
 import { useAuthStore } from '@/app/store/store';
 import { getMealTotals } from '@/app/utils/mealTotals';
+import { dateToTimestamp } from '@/app/utils/dates';
 import styles from '../savedMeals.module.css';
 
 export default function SavedMealCard({ savedMeal, date }) {
@@ -20,7 +21,7 @@ export default function SavedMealCard({ savedMeal, date }) {
 
     const handleLog = async () => {
         setIsLogging(true);
-        const newMealId = await logSavedMeal(savedMeal.id, date);
+        const newMealId = await logSavedMeal(savedMeal.id, dateToTimestamp(date));
         if (newMealId) {
             router.push(`/meal/${newMealId}`);
         } else {

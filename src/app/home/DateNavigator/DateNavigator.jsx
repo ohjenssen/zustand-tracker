@@ -2,6 +2,7 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './dateNavigator.module.css';
+import { toLocalDateString } from '@/app/utils/dates';
 
 export default function DateNavigator({ selectedDate, setSelectedDate }) {
   // Hjelpefunksjon for å endre dato med +1 eller -1 dag
@@ -21,10 +22,10 @@ export default function DateNavigator({ selectedDate, setSelectedDate }) {
     tomorrow.setDate(today.getDate() + 1);
 
     // Sammenlign kun dato-delen (YYYY-MM-DD)
-    const dateStr = date.toISOString().split('T')[0];
-    const todayStr = today.toISOString().split('T')[0];
-    const yesterdayStr = yesterday.toISOString().split('T')[0];
-    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+    const dateStr = toLocalDateString(date);
+    const todayStr = toLocalDateString(today);
+    const yesterdayStr = toLocalDateString(yesterday);
+    const tomorrowStr = toLocalDateString(tomorrow);
 
     if (dateStr === todayStr) return 'I dag';
     if (dateStr === yesterdayStr) return 'I går';

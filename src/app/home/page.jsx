@@ -7,6 +7,8 @@ import Meals from './Meals/Meals';
 import DateNavigator from './DateNavigator/DateNavigator';
 import Navbar from '@/app/components/Navbar/Navbar';
 import FloatingActionButton from '@/app/components/FloatingActionButton/FloatingActionButton';
+import { getMealTotals } from '@/app/utils/mealTotals';
+import { toLocalDateString } from '@/app/utils/dates';
 
 export default function CalorieTrackerHome() {
     const token = useAuthStore((state) => state.token);
@@ -23,39 +25,18 @@ export default function CalorieTrackerHome() {
         }
     }, [token, getMeals]);
 
-    // Konverter valgt dato til YYYY-MM-DD format
-    const formattedSelectedDate = selectedDate.toISOString().split('T')[0];
+    // Valgt dato som YYYY-MM-DD i lokal tid
+    const formattedSelectedDate = toLocalDateString(selectedDate);
 
-    // Filtrer måltidene for den valgte datoen
+    // Filtrer måltidene for den valgte datoen. created_at er i UTC,
+    // så vi gjør det om til lokal dato før vi sammenligner.
     const filteredMeals = allMeals.filter((meal) => {
         if (!meal.created_at) return false;
-        const mealDate = meal.created_at.split('T')[0];
-        return mealDate === formattedSelectedDate;
+        return toLocalDateString(new Date(meal.created_at)) === formattedSelectedDate;
     });
 
     // Regn ut totalt inntak for kalorier og makroer for den valgte dagen
-    const dailyTotals = filteredMeals.reduce((totals, meal) => {
-        const foodComponents = meal.foodComponents || [];
-        
-        foodComponents.forEach((food) => {
-            const grams = food.gramsEaten || 0;
-            const factor = grams / 100;
-
-            const protein = (food.protein || 0) * factor;
-            const fat = (food.fat || 0) * factor;
-            const carbs = (food.carbs || 0) * factor;
-
-            const kcalPer100 = food.kcal || ((food.protein * 4) + (food.carbs * 4) + (food.fat * 9));
-            const kcal = kcalPer100 * factor;
-
-            totals.kcal += kcal;
-            totals.protein += protein;
-            totals.fat += fat;
-            totals.carbs += carbs;
-        });
-
-        return totals;
-    }, { kcal: 0, protein: 0, fat: 0, carbs: 0 });
+    const dailyTotals = getMealTotals(filteredMeals.flatMap((meal) => meal.foodComponents || []));
 
     return (
         <>

@@ -6,6 +6,7 @@ import NativeBarcodeScanner from './NativeBarcodeScanner/NativeBarcodeScanner';
 import Spinner from '@/app/components/Spinner/Spinner';
 import { useAuthStore } from '../store/store';
 import BackButton from '@/app/components/BackButton/BackButton';
+import { API_URL } from '@/app/utils/api';
 
 function ScanPageContent() {
   const [scannedCode, setScannedCode] = useState(null);
@@ -23,7 +24,7 @@ function ScanPageContent() {
     setScannedCode(barcode);
     setIsLoading(true);
     try {
-      const res = await fetch(`https://foodtracker-api.oskarjenssen.com/api/food-products?barcode=${barcode}`, {
+      const res = await fetch(`${API_URL}/food-products?barcode=${barcode}`, {
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`
